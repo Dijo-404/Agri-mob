@@ -14,13 +14,14 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export function TopBar() {
   return (
-    <header className="h-16 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between px-6 sticky top-0 z-40">
+    <header className="h-16 border-b border-border/60 bg-card/70 backdrop-blur-xl glass-card flex items-center justify-between px-6 sticky top-0 z-40">
       {/* Search */}
-      <div className="relative w-96">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+      <div className="relative w-full max-w-xl">
+        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary/20 via-emerald-500/20 to-cyan-500/20 blur-lg" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input
           placeholder="Search crops, schemes, forum..."
-          className="pl-10 bg-muted/50 border-none focus-visible:ring-primary/20"
+          className="pl-11 pr-4 bg-card/80 border border-white/20 rounded-full focus-visible:ring-primary/40"
         />
       </div>
 
@@ -57,7 +58,7 @@ export function TopBar() {
         {/* User Profile */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center gap-3 px-3">
+            <Button variant="ghost" className="flex items-center gap-3 px-3 rounded-full border border-white/10">
               <Avatar className="w-8 h-8">
                 <AvatarFallback className="bg-primary text-primary-foreground text-sm">RP</AvatarFallback>
               </Avatar>

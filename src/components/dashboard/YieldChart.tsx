@@ -17,7 +17,7 @@ export function YieldChart() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.2 }}
-      className="glass-card rounded-xl p-6 h-full"
+      className="glass-card frosted-border rounded-xl p-6 h-full"
     >
       <div className="flex items-center justify-between mb-6">
         <div>

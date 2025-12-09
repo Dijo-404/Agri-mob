@@ -16,7 +16,7 @@ export function WeatherWidget() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.3 }}
-      className="glass-card rounded-xl p-6 h-full"
+      className="glass-card frosted-border rounded-xl p-6 h-full"
     >
       <div className="flex items-center gap-2 mb-4">
         <MapPin className="w-4 h-4 text-accent" />
