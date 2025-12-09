@@ -1,179 +1,250 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Layers, Maximize2 } from "lucide-react";
+import {
+  Droplets,
+  Thermometer,
+  Wind,
+  Gauge,
+  AlertTriangle,
+  CheckCircle,
+  MapPin,
+  Layers,
+  RefreshCw,
+} from "lucide-react";
+import { LineChart, Line, ResponsiveContainer, YAxis } from "recharts";
 import { Button } from "@/components/ui/button";
-import { SensorCard } from "@/components/field/SensorCard";
 import { sensorData } from "@/data/mockData";
-import { Badge } from "@/components/ui/badge";
 
-export default function FieldManagement() {
+// Sparkline Chart Component
+function Sparkline({ data, color }: { data: number[]; color: string }) {
+  const chartData = data.map((value, index) => ({ value, index }));
+  return (
+    <div className="h-10 w-24">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={chartData}>
+          <YAxis domain={["dataMin - 5", "dataMax + 5"]} hide />
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke={color}
+            strokeWidth={2}
+            dot={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+// Sensor Card Component
+function SensorCard({ sensor, delay }: { sensor: typeof sensorData[0]; delay: number }) {
+  const iconMap: Record<string, typeof Droplets> = {
+    soil_moisture: Droplets,
+    temperature: Thermometer,
+    humidity: Wind,
+    water_level: Gauge,
+  };
+  const Icon = iconMap[sensor.type] || Droplets;
+
+  const colorMap: Record<string, string> = {
+    normal: "text-success",
+    warning: "text-warning",
+    high: "text-destructive",
+  };
+  const statusColor = colorMap[sensor.status] || "text-muted-foreground";
+
+  const sparklineColor =
+    sensor.status === "normal" ? "#22c55e" : sensor.status === "warning" ? "#f59e0b" : "#ef4444";
+
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="space-y-6"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3, delay }}
+      className="glass-card rounded-xl p-4"
     >
+      <div className="flex items-start justify-between mb-3">
+        <div className="flex items-center gap-3">
+          <div
+            className={`p-2 rounded-lg ${
+              sensor.status === "normal"
+                ? "bg-success/10"
+                : sensor.status === "warning"
+                ? "bg-warning/10"
+                : "bg-destructive/10"
+            }`}
+          >
+            <Icon className={`w-5 h-5 ${statusColor}`} />
+          </div>
+          <div>
+            <p className="font-medium text-foreground text-sm">{sensor.name}</p>
+            <p className="text-xs text-muted-foreground">{sensor.lastUpdate}</p>
+          </div>
+        </div>
+        {sensor.status === "normal" ? (
+          <CheckCircle className="w-4 h-4 text-success" />
+        ) : (
+          <AlertTriangle className="w-4 h-4 text-warning" />
+        )}
+      </div>
+
+      <div className="flex items-end justify-between">
+        <div>
+          <p className="text-2xl font-bold text-foreground">
+            {sensor.value}
+            <span className="text-sm font-normal text-muted-foreground ml-1">{sensor.unit}</span>
+          </p>
+        </div>
+        <Sparkline data={sensor.history} color={sparklineColor} />
+      </div>
+
+      <div className="mt-3 pt-3 border-t border-border">
+        <p className="text-xs text-muted-foreground">7-day moisture history</p>
+      </div>
+    </motion.div>
+  );
+}
+
+export default function FieldManagement() {
+  const [selectedLayer, setSelectedLayer] = useState<"satellite" | "terrain" | "hybrid">("satellite");
+
+  return (
+    <div className="space-y-6">
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-display font-bold text-foreground">Field Management</h1>
-          <p className="text-muted-foreground">Monitor your fields and IoT sensors in real-time</p>
+          <h1 className="text-2xl font-bold text-foreground">Field Management</h1>
+          <p className="text-muted-foreground">IoT sensors & satellite monitoring</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <Button variant="outline" size="sm">
-            <Layers className="w-4 h-4 mr-2" />
-            Layers
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Sync Sensors
           </Button>
-          <Button variant="outline" size="sm">
-            <Maximize2 className="w-4 h-4 mr-2" />
-            Fullscreen
+          <Button size="sm">
+            <MapPin className="w-4 h-4 mr-2" />
+            Add Marker
           </Button>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Satellite Map */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Satellite View - Large Central Panel */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-          className="lg:col-span-2 glass-card rounded-xl overflow-hidden"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="lg:col-span-3 glass-card rounded-xl overflow-hidden"
         >
-          {/* Map Placeholder */}
-          <div className="relative h-[600px] bg-gradient-to-br from-primary/10 via-accent/5 to-success/10">
-            {/* Satellite-style grid overlay */}
-            <div className="absolute inset-0 opacity-20">
-              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid)" />
-              </svg>
+          {/* Map Controls */}
+          <div className="flex items-center justify-between p-4 border-b border-border">
+            <div className="flex items-center gap-2">
+              <Layers className="w-5 h-5 text-muted-foreground" />
+              <span className="font-medium text-foreground">Farm Map View</span>
             </div>
+            <div className="flex items-center gap-2">
+              {(["satellite", "terrain", "hybrid"] as const).map((layer) => (
+                <Button
+                  key={layer}
+                  variant={selectedLayer === layer ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedLayer(layer)}
+                  className="capitalize"
+                >
+                  {layer}
+                </Button>
+              ))}
+            </div>
+          </div>
 
-            {/* Farm Fields */}
-            <div className="absolute inset-8">
-              {/* Field A */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="absolute top-0 left-0 w-[45%] h-[55%] bg-success/30 border-2 border-success rounded-lg flex items-center justify-center"
-              >
-                <div className="text-center">
-                  <Badge className="bg-success text-success-foreground mb-2">Field A</Badge>
-                  <p className="text-xs text-foreground/80">Cotton - 12 acres</p>
-                  <p className="text-xs text-success">Healthy</p>
+          {/* Satellite Image Placeholder */}
+          <div className="relative h-[500px] bg-muted">
+            <img
+              src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&q=80"
+              alt="Satellite view of farm"
+              className="w-full h-full object-cover"
+            />
+
+            {/* Map Overlay with Markers */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent">
+              {/* Field Markers */}
+              <div className="absolute top-[20%] left-[25%] flex flex-col items-center">
+                <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                  <Droplets className="w-4 h-4 text-white" />
                 </div>
-              </motion.div>
+                <span className="mt-1 px-2 py-0.5 bg-background/90 rounded text-xs font-medium">
+                  Field A - 45%
+                </span>
+              </div>
 
-              {/* Field B */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="absolute top-0 right-0 w-[50%] h-[45%] bg-success/30 border-2 border-success rounded-lg flex items-center justify-center"
-              >
-                <div className="text-center">
-                  <Badge className="bg-success text-success-foreground mb-2">Field B</Badge>
-                  <p className="text-xs text-foreground/80">Wheat - 8 acres</p>
-                  <p className="text-xs text-success">Healthy</p>
+              <div className="absolute top-[40%] left-[55%] flex flex-col items-center">
+                <div className="w-8 h-8 bg-warning rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                  <Droplets className="w-4 h-4 text-white" />
                 </div>
-              </motion.div>
+                <span className="mt-1 px-2 py-0.5 bg-background/90 rounded text-xs font-medium">
+                  Field B - 32%
+                </span>
+              </div>
 
-              {/* Field C - Needs attention */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="absolute bottom-0 left-[20%] w-[55%] h-[40%] bg-warning/30 border-2 border-warning rounded-lg flex items-center justify-center"
-              >
-                <div className="text-center">
-                  <Badge className="bg-warning text-warning-foreground mb-2">Field C</Badge>
-                  <p className="text-xs text-foreground/80">Soybean - 10 acres</p>
-                  <p className="text-xs text-warning">Low Moisture</p>
+              <div className="absolute top-[60%] left-[35%] flex flex-col items-center">
+                <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center shadow-lg">
+                  <Thermometer className="w-4 h-4 text-white" />
                 </div>
-              </motion.div>
+                <span className="mt-1 px-2 py-0.5 bg-background/90 rounded text-xs font-medium">
+                  28°C
+                </span>
+              </div>
 
-              {/* Sensor Markers */}
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.6, type: "spring" }}
-                className="absolute top-[15%] left-[15%] w-6 h-6 bg-accent rounded-full border-2 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform"
-              >
-                <MapPin className="w-3 h-3 text-white" />
-              </motion.div>
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.7, type: "spring" }}
-                className="absolute top-[35%] left-[30%] w-6 h-6 bg-accent rounded-full border-2 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform"
-              >
-                <MapPin className="w-3 h-3 text-white" />
-              </motion.div>
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.8, type: "spring" }}
-                className="absolute top-[20%] right-[25%] w-6 h-6 bg-accent rounded-full border-2 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform"
-              >
-                <MapPin className="w-3 h-3 text-white" />
-              </motion.div>
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.9, type: "spring" }}
-                className="absolute bottom-[25%] left-[45%] w-6 h-6 bg-warning rounded-full border-2 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform animate-pulse"
-              >
-                <MapPin className="w-3 h-3 text-white" />
-              </motion.div>
+              <div className="absolute top-[30%] left-[70%] flex flex-col items-center">
+                <div className="w-8 h-8 bg-destructive rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                  <AlertTriangle className="w-4 h-4 text-white" />
+                </div>
+                <span className="mt-1 px-2 py-0.5 bg-destructive/90 text-white rounded text-xs font-medium">
+                  Pest Alert
+                </span>
+              </div>
             </div>
 
             {/* Map Legend */}
-            <div className="absolute bottom-4 left-4 glass-card rounded-lg p-3 space-y-2">
-              <p className="text-xs font-medium text-foreground">Legend</p>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-success rounded" />
-                <span className="text-xs text-muted-foreground">Healthy</span>
+            <div className="absolute bottom-4 left-4 glass-card rounded-lg p-3">
+              <p className="text-xs font-medium text-foreground mb-2">Legend</p>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-xs">
+                  <div className="w-3 h-3 rounded-full bg-success" />
+                  <span className="text-muted-foreground">Normal</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  <div className="w-3 h-3 rounded-full bg-warning" />
+                  <span className="text-muted-foreground">Warning</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  <div className="w-3 h-3 rounded-full bg-destructive" />
+                  <span className="text-muted-foreground">Alert</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-warning rounded" />
-                <span className="text-xs text-muted-foreground">Needs Attention</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-accent rounded-full" />
-                <span className="text-xs text-muted-foreground">IoT Sensor</span>
-              </div>
+            </div>
+
+            {/* Farm Info */}
+            <div className="absolute bottom-4 right-4 glass-card rounded-lg p-3">
+              <p className="text-xs font-medium text-foreground">Total Farm Area</p>
+              <p className="text-lg font-bold text-foreground">15 acres</p>
+              <p className="text-xs text-muted-foreground">5 active sensors</p>
             </div>
           </div>
         </motion.div>
 
-        {/* Sensor Sidebar */}
+        {/* Sensor Overlay - Right Sidebar */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="font-display font-semibold text-foreground">Live Sensors</h3>
-            <Badge variant="outline" className="text-xs">
-              {sensorData.filter(s => s.status === "online").length}/{sensorData.length} Online
-            </Badge>
+            <h2 className="font-semibold text-foreground">Live Sensor Data</h2>
+            <span className="text-xs text-muted-foreground">Auto-refresh: 30s</span>
           </div>
-          <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
-            {sensorData.map((sensor, index) => (
-              <motion.div
-                key={sensor.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + index * 0.1 }}
-              >
-                <SensorCard sensor={sensor} />
-              </motion.div>
-            ))}
-          </div>
+
+          {sensorData.map((sensor, idx) => (
+            <SensorCard key={sensor.id} sensor={sensor} delay={idx * 0.1} />
+          ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

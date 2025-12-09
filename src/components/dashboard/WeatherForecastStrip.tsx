@@ -15,7 +15,7 @@ type ForecastStripProps = {
   days?: number;
 };
 
-export function WeatherForecastStrip({ days = 5 }: ForecastStripProps) {
+export function WeatherForecastStrip({ days = 7 }: ForecastStripProps) {
   const forecast = mockWeather.forecast.slice(0, days);
 
   return (
@@ -27,7 +27,7 @@ export function WeatherForecastStrip({ days = 5 }: ForecastStripProps) {
         </div>
         <span className="text-xs text-muted-foreground">Based on latest feed</span>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3">
         {forecast.map((day, idx) => {
           const Icon = iconMap[day.condition] || Cloud;
           return (

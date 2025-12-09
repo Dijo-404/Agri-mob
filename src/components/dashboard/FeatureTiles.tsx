@@ -17,15 +17,15 @@ const features: Feature[] = [
   { title: "Pest Detection", description: "Identify pests and controls", to: "/community", icon: Bug, gradient: "from-purple-500 to-indigo-500" },
   { title: "Market Prices", description: "Real-time mandi insights", to: "/market-analytics", icon: TrendingUp, gradient: "from-sky-500 to-blue-500" },
   { title: "AI Assistant", description: "Ask anything about your farm", to: "/community", icon: Sparkles, gradient: "from-pink-500 to-fuchsia-500" },
-  { title: "Profit & Loss", description: "Track farm profitability", to: "/settings", icon: Calculator, gradient: "from-amber-500 to-orange-500" },
-  { title: "Weather", description: "7-day forecast at a glance", to: "/", icon: CloudSun, gradient: "from-cyan-500 to-teal-500" },
+  { title: "Profit & Loss", description: "Track farm profitability", to: "/market-analytics", icon: Calculator, gradient: "from-amber-500 to-orange-500" },
+  { title: "Weather", description: "7-day forecast at a glance", to: "/weather", icon: CloudSun, gradient: "from-cyan-500 to-teal-500" },
   { title: "Community", description: "Join groups and chat", to: "/community", icon: Users, gradient: "from-emerald-500 to-teal-500" },
   { title: "SmartMapping", description: "Geospatial farm insights", to: "/smart-mapping", icon: Map, gradient: "from-blue-500 to-cyan-500" },
-  { title: "Calendar", description: "Events and tasks", to: "/settings", icon: Layers, gradient: "from-orange-500 to-yellow-500" },
+  { title: "Yield Prediction", description: "Predict crop yield", to: "/yield-prediction", icon: Layers, gradient: "from-lime-500 to-green-500" },
+  { title: "Learn Courses", description: "Enhance farming knowledge", to: "/learn", icon: BookOpenCheck, gradient: "from-indigo-500 to-purple-500" },
   { title: "Soil Test", description: "Analyze soil quality", to: "/field-management", icon: FlaskConical, gradient: "from-amber-600 to-amber-400" },
   { title: "Gov Schemes", description: "Access programs quickly", to: "/gov-schemes", icon: BookOpenCheck, gradient: "from-indigo-500 to-blue-500" },
   { title: "Helpline", description: "State-wise support numbers", to: "/helpline", icon: PhoneCall, gradient: "from-rose-500 to-red-500" },
-  { title: "Voice Assist", description: "Hands-free mic actions", to: "/", icon: Mic, gradient: "from-emerald-500 to-cyan-500" },
 ];
 
 export function FeatureTiles() {

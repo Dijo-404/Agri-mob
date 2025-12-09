@@ -12,6 +12,9 @@ import GovSchemes from "./pages/GovSchemes";
 import Settings from "./pages/Settings";
 import SmartMapping from "./pages/SmartMapping";
 import Helpline from "./pages/Helpline";
+import YieldPrediction from "./pages/YieldPrediction";
+import Weather from "./pages/Weather";
+import LearnFarmerCourse from "./pages/LearnFarmerCourse";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +34,9 @@ const App = () => (
             <Route path="/gov-schemes" element={<GovSchemes />} />
             <Route path="/smart-mapping" element={<SmartMapping />} />
             <Route path="/helpline" element={<Helpline />} />
+            <Route path="/yield-prediction" element={<YieldPrediction />} />
+            <Route path="/weather" element={<Weather />} />
+            <Route path="/learn" element={<LearnFarmerCourse />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

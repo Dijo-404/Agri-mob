@@ -1,295 +1,308 @@
-// Yield data for charts (2023 vs 2024)
+// Comprehensive Mock Data for AgriSmart Web Dashboard
+
+// Weather Data
+export const weatherData = {
+  current: {
+    temp: 28,
+    feelsLike: 30,
+    humidity: 65,
+    windSpeed: 12,
+    condition: "Partly Cloudy",
+    icon: "partly-cloudy",
+    location: "Nashik, Maharashtra",
+    soilMoisture: 45,
+    uvIndex: 6,
+  },
+  forecast: [
+    { day: "Today", high: 32, low: 24, condition: "Partly Cloudy", icon: "partly-cloudy", rainChance: 20 },
+    { day: "Tue", high: 33, low: 25, condition: "Sunny", icon: "sunny", rainChance: 10 },
+    { day: "Wed", high: 31, low: 24, condition: "Cloudy", icon: "cloudy", rainChance: 40 },
+    { day: "Thu", high: 29, low: 23, condition: "Rain", icon: "rain", rainChance: 80 },
+    { day: "Fri", high: 28, low: 22, condition: "Rain", icon: "rain", rainChance: 70 },
+    { day: "Sat", high: 30, low: 23, condition: "Partly Cloudy", icon: "partly-cloudy", rainChance: 30 },
+    { day: "Sun", high: 32, low: 25, condition: "Sunny", icon: "sunny", rainChance: 5 },
+  ],
+};
+
+// Yield Data for 12 months (This Year vs Last Year)
 export const yieldData = [
-  { month: "Jan", year2023: 45, year2024: 52 },
-  { month: "Feb", year2023: 38, year2024: 48 },
-  { month: "Mar", year2023: 62, year2024: 71 },
-  { month: "Apr", year2023: 85, year2024: 92 },
-  { month: "May", year2023: 78, year2024: 88 },
-  { month: "Jun", year2023: 42, year2024: 55 },
-  { month: "Jul", year2023: 35, year2024: 45 },
-  { month: "Aug", year2023: 48, year2024: 58 },
-  { month: "Sep", year2023: 72, year2024: 82 },
-  { month: "Oct", year2023: 95, year2024: 105 },
-  { month: "Nov", year2023: 88, year2024: 98 },
-  { month: "Dec", year2023: 55, year2024: 65 },
+  { month: "Jan", thisYear: 42, lastYear: 38 },
+  { month: "Feb", thisYear: 48, lastYear: 42 },
+  { month: "Mar", thisYear: 55, lastYear: 50 },
+  { month: "Apr", thisYear: 62, lastYear: 55 },
+  { month: "May", thisYear: 70, lastYear: 62 },
+  { month: "Jun", thisYear: 78, lastYear: 68 },
+  { month: "Jul", thisYear: 85, lastYear: 75 },
+  { month: "Aug", thisYear: 92, lastYear: 82 },
+  { month: "Sep", thisYear: 88, lastYear: 78 },
+  { month: "Oct", thisYear: 75, lastYear: 70 },
+  { month: "Nov", thisYear: 60, lastYear: 55 },
+  { month: "Dec", thisYear: 50, lastYear: 45 },
 ];
 
-// Market prices data
-export const marketPrices = [
-  { id: 1, crop: "Cotton", variety: "DCH-32", state: "Maharashtra", mandi: "Nagpur APMC", price: 6850, trend: "up", change: 2.5 },
-  { id: 2, crop: "Wheat", variety: "PBW-343", state: "Punjab", mandi: "Ludhiana", price: 2275, trend: "up", change: 1.8 },
-  { id: 3, crop: "Rice", variety: "Basmati 1121", state: "Haryana", mandi: "Karnal", price: 4200, trend: "down", change: -0.8 },
-  { id: 4, crop: "Soybean", variety: "JS-9560", state: "Madhya Pradesh", mandi: "Indore", price: 4650, trend: "up", change: 3.2 },
-  { id: 5, crop: "Sugarcane", variety: "Co-0238", state: "Uttar Pradesh", mandi: "Meerut", price: 350, trend: "stable", change: 0 },
-  { id: 6, crop: "Groundnut", variety: "TAG-24", state: "Gujarat", mandi: "Rajkot", price: 5800, trend: "up", change: 1.5 },
-  { id: 7, crop: "Chana", variety: "Kabuli", state: "Rajasthan", mandi: "Bikaner", price: 5200, trend: "down", change: -1.2 },
-  { id: 8, crop: "Mustard", variety: "Pusa Bold", state: "Rajasthan", mandi: "Alwar", price: 5100, trend: "up", change: 2.1 },
-  { id: 9, crop: "Onion", variety: "Nashik Red", state: "Maharashtra", mandi: "Lasalgaon", price: 1800, trend: "down", change: -4.5 },
-  { id: 10, crop: "Tomato", variety: "Hybrid", state: "Karnataka", mandi: "Kolar", price: 2200, trend: "up", change: 5.8 },
-  { id: 11, crop: "Potato", variety: "Kufri Jyoti", state: "Uttar Pradesh", mandi: "Agra", price: 1200, trend: "stable", change: 0.2 },
-  { id: 12, crop: "Maize", variety: "DHM-117", state: "Bihar", mandi: "Patna", price: 2050, trend: "up", change: 1.1 },
-];
+// Dashboard Stats
+export const dashboardStats = {
+  yieldForecast: { value: 485, unit: "quintals", change: 12.5, trend: "up" },
+  marketPrice: { value: 6850, unit: "₹/quintal", crop: "Cotton", change: 2.5, trend: "up" },
+  activeAlerts: { value: 3, types: ["pest", "moisture", "weather"] },
+  nextHarvest: { days: 18, crop: "Cotton", date: "Dec 27, 2025" },
+};
 
-// IoT Sensor data
+// Sensor Data for IoT
 export const sensorData = [
   {
-    id: "ESP32-001",
+    id: "sensor-1",
     name: "Field A - North",
-    moisture: 68,
-    temperature: 28,
-    ph: 6.8,
-    battery: 85,
-    status: "online",
-    moistureHistory: [62, 65, 68, 64, 70, 68, 68],
+    type: "soil_moisture",
+    value: 45,
+    unit: "%",
+    status: "normal",
+    history: [42, 44, 45, 43, 46, 45, 44],
+    lastUpdate: "2 min ago",
   },
   {
-    id: "ESP32-002",
+    id: "sensor-2",
     name: "Field A - South",
-    moisture: 45,
-    temperature: 31,
-    ph: 7.2,
-    battery: 72,
-    status: "online",
-    moistureHistory: [52, 48, 45, 47, 44, 46, 45],
+    type: "soil_moisture",
+    value: 32,
+    unit: "%",
+    status: "warning",
+    history: [38, 36, 35, 34, 33, 32, 32],
+    lastUpdate: "5 min ago",
   },
   {
-    id: "ESP32-003",
+    id: "sensor-3",
     name: "Field B - Center",
-    moisture: 72,
-    temperature: 27,
-    ph: 6.5,
-    battery: 92,
-    status: "online",
-    moistureHistory: [68, 70, 72, 71, 73, 72, 72],
+    type: "temperature",
+    value: 28,
+    unit: "°C",
+    status: "normal",
+    history: [26, 27, 27, 28, 28, 28, 28],
+    lastUpdate: "1 min ago",
   },
   {
-    id: "ESP32-004",
-    name: "Field C - West",
-    moisture: 38,
-    temperature: 33,
-    ph: 7.5,
-    battery: 15,
-    status: "low_battery",
-    moistureHistory: [45, 42, 40, 38, 37, 38, 38],
+    id: "sensor-4",
+    name: "Greenhouse 1",
+    type: "humidity",
+    value: 72,
+    unit: "%",
+    status: "high",
+    history: [68, 69, 70, 71, 72, 72, 72],
+    lastUpdate: "3 min ago",
+  },
+  {
+    id: "sensor-5",
+    name: "Water Tank",
+    type: "water_level",
+    value: 85,
+    unit: "%",
+    status: "normal",
+    history: [90, 89, 88, 87, 86, 85, 85],
+    lastUpdate: "10 min ago",
   },
 ];
 
-// Forum posts
+// Recent Activity
+export const recentActivity = [
+  { id: 1, type: "sensor", message: "Soil moisture low in Field B", time: "5 min ago", severity: "warning" },
+  { id: 2, type: "ai", message: "Crop recommendation generated", time: "15 min ago", severity: "info" },
+  { id: 3, type: "market", message: "Cotton price increased by 5%", time: "1 hour ago", severity: "success" },
+  { id: 4, type: "weather", message: "Rain expected in 2 days", time: "2 hours ago", severity: "info" },
+  { id: 5, type: "pest", message: "Aphid activity detected in Field A", time: "3 hours ago", severity: "danger" },
+  { id: 6, type: "harvest", message: "Wheat harvest completed", time: "Yesterday", severity: "success" },
+];
+
+// Market Prices Table Data
+export const marketPrices = [
+  { id: 1, crop: "Cotton", variety: "DCH-32", state: "Maharashtra", price: 6850, unit: "quintal", trend: "up", change: 5.2 },
+  { id: 2, crop: "Wheat", variety: "HD-2967", state: "Punjab", price: 2275, unit: "quintal", trend: "stable", change: 0.5 },
+  { id: 3, crop: "Rice", variety: "Basmati", state: "Haryana", price: 4200, unit: "quintal", trend: "up", change: 3.8 },
+  { id: 4, crop: "Soybean", variety: "JS-335", state: "Madhya Pradesh", price: 4650, unit: "quintal", trend: "down", change: -2.1 },
+  { id: 5, crop: "Maize", variety: "DHM-117", state: "Karnataka", price: 2150, unit: "quintal", trend: "up", change: 1.5 },
+  { id: 6, crop: "Sugarcane", variety: "Co-0238", state: "Uttar Pradesh", price: 350, unit: "quintal", trend: "stable", change: 0 },
+  { id: 7, crop: "Groundnut", variety: "TG-37A", state: "Gujarat", price: 5800, unit: "quintal", trend: "up", change: 4.2 },
+  { id: 8, crop: "Mustard", variety: "RH-749", state: "Rajasthan", price: 5200, unit: "quintal", trend: "down", change: -1.8 },
+  { id: 9, crop: "Chana", variety: "JG-11", state: "Maharashtra", price: 4850, unit: "quintal", trend: "up", change: 2.9 },
+  { id: 10, crop: "Bajra", variety: "HHB-67", state: "Rajasthan", price: 2350, unit: "quintal", trend: "stable", change: 0.3 },
+];
+
+// Forum Posts
 export const forumPosts = [
   {
     id: 1,
-    title: "Best fertilizer for cotton in Vidarbha region?",
-    author: "Ramesh Patil",
-    avatar: "RP",
-    category: "Seeds & Varieties",
-    content: "I'm growing cotton in Wardha district. Which fertilizer combination works best for black soil? Currently using DAP but yields are low.",
+    title: "Best fertilizer for cotton during flowering stage?",
+    author: "Ramesh Kumar",
+    avatar: "RK",
+    category: "Seeds & Fertilizers",
+    replies: 23,
     upvotes: 45,
-    comments: 12,
-    timeAgo: "2 hours ago",
-    image: null,
+    time: "2 hours ago",
+    preview: "I'm growing cotton and it's now in the flowering stage. What NPK ratio would you recommend?",
+    image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400",
   },
   {
     id: 2,
-    title: "How to control pink bollworm in cotton?",
-    author: "Suresh Kumar",
-    avatar: "SK",
-    category: "Pest Control",
-    content: "My cotton crop is heavily infested with pink bollworm. Tried regular pesticides but no effect. Need urgent help before harvest!",
-    upvotes: 78,
-    comments: 23,
-    timeAgo: "5 hours ago",
-    image: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=400",
-  },
-  {
-    id: 3,
-    title: "Drip irrigation setup cost for 5 acres",
-    author: "Anita Devi",
-    avatar: "AD",
-    category: "Irrigation",
-    content: "Planning to install drip irrigation for my sugarcane field. Can anyone share approximate cost and best company to contact in UP?",
+    title: "How to control aphids organically in wheat?",
+    author: "Suresh Patel",
+    avatar: "SP",
+    category: "Pests & Diseases",
+    replies: 18,
     upvotes: 32,
-    comments: 18,
-    timeAgo: "1 day ago",
+    time: "5 hours ago",
+    preview: "Noticed aphids on my wheat crop. Looking for organic solutions that won't affect the grain quality.",
     image: null,
   },
   {
+    id: 3,
+    title: "New tractor vs used - what's your experience?",
+    author: "Dinesh Sharma",
+    avatar: "DS",
+    category: "Machinery",
+    replies: 56,
+    upvotes: 89,
+    time: "1 day ago",
+    preview: "Planning to buy a tractor for my 15-acre farm. Should I go for a new Mahindra or a used John Deere?",
+    image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400",
+  },
+  {
     id: 4,
-    title: "Experience with John Deere 5050D tractor",
-    author: "Vikram Singh",
-    avatar: "VS",
-    category: "Farm Machinery",
-    content: "Thinking of buying John Deere 5050D for my 15-acre farm. Any owners here? How's the mileage and after-sales service?",
-    upvotes: 56,
-    comments: 34,
-    timeAgo: "2 days ago",
-    image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=400",
+    title: "Drip irrigation setup cost and ROI",
+    author: "Priya Deshmukh",
+    avatar: "PD",
+    category: "Irrigation",
+    replies: 34,
+    upvotes: 67,
+    time: "2 days ago",
+    preview: "Want to switch from flood irrigation to drip. How long before I see returns on investment?",
+    image: null,
   },
   {
     id: 5,
-    title: "PM-KISAN amount not received for 3 months",
-    author: "Mohan Lal",
-    avatar: "ML",
-    category: "Government Help",
-    content: "I haven't received PM-KISAN payment since June. Bank account and Aadhaar are linked correctly. Who should I contact?",
-    upvotes: 89,
-    comments: 41,
-    timeAgo: "3 days ago",
+    title: "PM-KISAN payment stuck - how to resolve?",
+    author: "Anil Yadav",
+    avatar: "AY",
+    category: "Government Schemes",
+    replies: 42,
+    upvotes: 78,
+    time: "3 days ago",
+    preview: "Haven't received PM-KISAN payment for 2 installments. Bank details are correct. Any suggestions?",
     image: null,
   },
 ];
 
-// Government schemes
+// Forum Categories
+export const forumCategories = [
+  { id: 1, name: "Pests & Diseases", count: 234, icon: "Bug" },
+  { id: 2, name: "Seeds & Fertilizers", count: 189, icon: "Sprout" },
+  { id: 3, name: "Machinery", count: 156, icon: "Tractor" },
+  { id: 4, name: "Irrigation", count: 142, icon: "Droplets" },
+  { id: 5, name: "Government Schemes", count: 298, icon: "Landmark" },
+  { id: 6, name: "Market Prices", count: 167, icon: "TrendingUp" },
+];
+
+// Government Schemes
 export const govSchemes = [
   {
     id: 1,
     name: "PM-KISAN",
     fullName: "Pradhan Mantri Kisan Samman Nidhi",
-    description: "Direct income support of ₹6,000 per year to small and marginal farmer families.",
-    eligibility: ["Land owning farmers", "Small & Marginal"],
-    benefits: "₹6,000/year in 3 installments",
+    description: "Direct income support of ₹6,000 per year to farmer families",
+    benefits: ["₹2,000 every 4 months", "Direct bank transfer", "No middlemen"],
+    eligibility: "Small and marginal farmers with cultivable land",
     deadline: "Ongoing",
-    icon: "Banknote",
+    status: "active",
   },
   {
     id: 2,
     name: "PM Fasal Bima Yojana",
     fullName: "Pradhan Mantri Fasal Bima Yojana",
-    description: "Crop insurance scheme providing financial support to farmers in case of crop failure.",
-    eligibility: ["All farmers", "Kharif & Rabi crops"],
-    benefits: "Up to ₹2 lakh coverage",
+    description: "Crop insurance scheme providing financial support in case of crop failure",
+    benefits: ["Low premium rates", "Full sum insured", "Quick claim settlement"],
+    eligibility: "All farmers growing notified crops",
     deadline: "Before sowing season",
-    icon: "Shield",
+    status: "active",
   },
   {
     id: 3,
     name: "Kisan Credit Card",
     fullName: "Kisan Credit Card Scheme",
-    description: "Credit facility for farmers to meet their agricultural and consumption needs.",
-    eligibility: ["All farmers", "Tenant farmers", "Sharecroppers"],
-    benefits: "Up to ₹3 lakh @ 4% interest",
+    description: "Credit facility for farmers to meet their agricultural needs",
+    benefits: ["Interest subvention", "Flexible repayment", "Insurance coverage"],
+    eligibility: "All farmers, including tenant farmers",
     deadline: "Ongoing",
-    icon: "CreditCard",
+    status: "active",
   },
   {
     id: 4,
     name: "Soil Health Card",
     fullName: "Soil Health Card Scheme",
-    description: "Free soil testing and nutrient recommendations for optimal fertilizer use.",
-    eligibility: ["All farmers"],
-    benefits: "Free soil testing",
+    description: "Free soil testing and recommendations for nutrients and fertilizers",
+    benefits: ["Free soil analysis", "Customized recommendations", "Improved yield"],
+    eligibility: "All farmers",
     deadline: "Ongoing",
-    icon: "FileText",
-  },
-  {
-    id: 5,
-    name: "PM-KUSUM",
-    fullName: "Pradhan Mantri Kisan Urja Suraksha Evam Utthan Mahabhiyan",
-    description: "Solar pump and grid-connected renewable power plants for farmers.",
-    eligibility: ["All farmers", "Farmer groups"],
-    benefits: "60% subsidy on solar pumps",
-    deadline: "March 2025",
-    icon: "Sun",
-  },
-  {
-    id: 6,
-    name: "eNAM",
-    fullName: "National Agriculture Market",
-    description: "Online trading platform for agricultural commodities across India.",
-    eligibility: ["All farmers", "Traders"],
-    benefits: "Better price discovery",
-    deadline: "Ongoing",
-    icon: "Store",
+    status: "active",
   },
 ];
 
-// Recent activity
-export const recentActivity = [
-  { id: 1, type: "alert", message: "Low soil moisture detected in Field C", time: "10 mins ago", severity: "warning" },
-  { id: 2, type: "sensor", message: "Temperature reading: 31°C in Field A", time: "25 mins ago", severity: "info" },
-  { id: 3, type: "market", message: "Cotton prices up by ₹150 in Nagpur APMC", time: "1 hour ago", severity: "success" },
-  { id: 4, type: "weather", message: "Rain expected in next 48 hours", time: "2 hours ago", severity: "info" },
-  { id: 5, type: "alert", message: "ESP32-004 battery critically low (15%)", time: "3 hours ago", severity: "error" },
-  { id: 6, type: "ai", message: "AI recommends irrigation for Field B tomorrow", time: "4 hours ago", severity: "info" },
+// Trending Schemes (sidebar)
+export const trendingSchemes = [
+  { name: "PM-KISAN", applications: "2.3L this week" },
+  { name: "Fasal Bima", applications: "1.8L this week" },
+  { name: "KCC Renewal", applications: "95K this week" },
+  { name: "Subsidy Portal", applications: "67K this week" },
 ];
 
-// Weather data
-export const weatherData = {
-  current: {
-    temp: 32,
-    condition: "Partly Cloudy",
-    humidity: 65,
-    wind: 12,
-    location: "Nagpur, Maharashtra",
-  },
-  forecast: [
-    { day: "Today", high: 34, low: 24, condition: "sunny" },
-    { day: "Tue", high: 33, low: 23, condition: "cloudy" },
-    { day: "Wed", high: 30, low: 22, condition: "rainy" },
-    { day: "Thu", high: 28, low: 21, condition: "rainy" },
-    { day: "Fri", high: 31, low: 22, condition: "sunny" },
-  ],
-};
-
-// Map markers across India
+// Map Markers for Smart Mapping
 export const mapMarkers = [
-  { id: "delhi", name: "Delhi", lat: 28.6139, lng: 77.209, type: "market" },
-  { id: "nagpur", name: "Nagpur", lat: 21.1466, lng: 79.0888, type: "weather" },
-  { id: "pune", name: "Pune", lat: 18.5204, lng: 73.8567, type: "iot" },
-  { id: "bengaluru", name: "Bengaluru", lat: 12.9716, lng: 77.5946, type: "forecast" },
-  { id: "jaipur", name: "Jaipur", lat: 26.9124, lng: 75.7873, type: "market" },
-  { id: "bhubaneswar", name: "Bhubaneswar", lat: 20.2961, lng: 85.8245, type: "alert" },
-  { id: "ahmedabad", name: "Ahmedabad", lat: 23.0225, lng: 72.5714, type: "iot" },
-  { id: "lucknow", name: "Lucknow", lat: 26.8467, lng: 80.9462, type: "market" },
-  { id: "patna", name: "Patna", lat: 25.5941, lng: 85.1376, type: "rain" },
-  { id: "hyderabad", name: "Hyderabad", lat: 17.385, lng: 78.4867, type: "market" },
+  { id: 1, lat: 20.0114, lng: 73.7803, type: "field", name: "Field A - Cotton", area: "5 acres", status: "healthy" },
+  { id: 2, lat: 20.0134, lng: 73.7823, type: "field", name: "Field B - Wheat", area: "3 acres", status: "needs_water" },
+  { id: 3, lat: 20.0094, lng: 73.7783, type: "sensor", name: "Moisture Sensor 1", value: "45%", status: "normal" },
+  { id: 4, lat: 20.0124, lng: 73.7843, type: "sensor", name: "Temperature Sensor", value: "28°C", status: "normal" },
+  { id: 5, lat: 20.0074, lng: 73.7763, type: "alert", name: "Pest Alert Zone", message: "Aphids detected", severity: "high" },
+  { id: 6, lat: 20.0154, lng: 73.7863, type: "water", name: "Water Tank", level: "85%", status: "good" },
+  { id: 7, lat: 20.0084, lng: 73.7813, type: "field", name: "Field C - Soybean", area: "4 acres", status: "harvesting" },
+  { id: 8, lat: 20.0144, lng: 73.7793, type: "equipment", name: "Tractor Location", status: "idle" },
 ];
 
+// Helplines
 export const helplines = [
-  {
-    state: "Andhra Pradesh",
-    category: "Consumer Affairs",
-    numbers: ["1800-425-0082", "1800-425-2977"],
-    website: "cphfs.in",
-  },
-  {
-    state: "Arunachal Pradesh",
-    category: "Agriculture Dept",
-    numbers: ["1800-345-3601"],
-    website: "",
-  },
-  {
-    state: "Maharashtra",
-    category: "Farmer Helpline",
-    numbers: ["1800-233-4000"],
-    website: "mahafarm.gov.in",
-  },
-  {
-    state: "Tamil Nadu",
-    category: "Krishi Call Center",
-    numbers: ["1551"],
-    website: "",
-  },
-  {
-    state: "Karnataka",
-    category: "Consumer Affairs",
-    numbers: ["1800-425-9339"],
-    website: "",
-  },
+  { state: "National", category: "Kisan Call Center", numbers: ["1800-180-1551"], website: "farmer.gov.in" },
+  { state: "Maharashtra", category: "Agriculture Helpline", numbers: ["1800-233-4000"], website: "mahaagri.gov.in" },
+  { state: "Punjab", category: "Kisan Helpline", numbers: ["1800-180-1551", "0172-2701118"], website: "agripb.gov.in" },
+  { state: "Haryana", category: "Agriculture Helpline", numbers: ["1800-180-2117"], website: "agriharyana.gov.in" },
+  { state: "Gujarat", category: "Kisan Helpline", numbers: ["1800-180-1551", "079-23256001"], website: "agri.gujarat.gov.in" },
+  { state: "Karnataka", category: "Raitha Samparka Kendra", numbers: ["1800-425-1553"], website: "raitamitra.kar.nic.in" },
+  { state: "Tamil Nadu", category: "Uzhavar Helpline", numbers: ["1800-425-1885"], website: "tnagri.tn.gov.in" },
+  { state: "Uttar Pradesh", category: "Kisan Helpline", numbers: ["1800-180-1551"], website: "upagripardarshi.gov.in" },
+  { state: "Madhya Pradesh", category: "Kisan Call Center", numbers: ["1800-180-1551", "0755-2583313"], website: "mpkrishi.mp.gov.in" },
+  { state: "Rajasthan", category: "Kisan Helpline", numbers: ["1800-180-1551"], website: "agriculture.rajasthan.gov.in" },
 ];
 
-// Forum categories
-export const forumCategories = [
-  { id: 1, name: "Pest Control", count: 234, icon: "Bug" },
-  { id: 2, name: "Seeds & Varieties", count: 189, icon: "Sprout" },
-  { id: 3, name: "Farm Machinery", count: 156, icon: "Tractor" },
-  { id: 4, name: "Irrigation", count: 142, icon: "Droplets" },
-  { id: 5, name: "Government Help", count: 298, icon: "Landmark" },
+// Indian States for dropdowns
+export const indianStates = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa",
+  "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala",
+  "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland",
+  "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+  "Uttar Pradesh", "Uttarakhand", "West Bengal",
 ];
 
-// Dashboard stats
-export const dashboardStats = {
-  yieldForecast: { value: 485, unit: "quintals", change: 12.5 },
-  marketPrice: { value: 6850, unit: "₹/quintal", crop: "Cotton", change: 2.5 },
-  activeAlerts: { value: 3, types: ["pest", "moisture", "weather"] },
-  nextHarvest: { days: 18, crop: "Cotton" },
+// Indian Districts by State
+export const indianDistricts: Record<string, string[]> = {
+  "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad", "Solapur", "Kolhapur", "Amravati", "Satara", "Sangli"],
+  "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali", "Pathankot", "Hoshiarpur"],
+  "Haryana": ["Gurugram", "Faridabad", "Panipat", "Ambala", "Karnal", "Hisar", "Rohtak", "Sonipat"],
+  "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Junagadh", "Gandhinagar"],
+  "Karnataka": ["Bengaluru", "Mysuru", "Hubli", "Mangaluru", "Belgaum", "Dharwad", "Shimoga", "Tumkur"],
+  "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli", "Erode", "Vellore"],
+  "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi", "Agra", "Allahabad", "Meerut", "Noida", "Ghaziabad"],
+  "Madhya Pradesh": ["Bhopal", "Indore", "Gwalior", "Jabalpur", "Ujjain", "Sagar", "Rewa", "Satna"],
+  "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Bikaner", "Ajmer", "Alwar", "Bharatpur"],
+  "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Asansol", "Siliguri", "Darjeeling", "Kharagpur"],
 };
+
+// Crops for dropdowns
+export const crops = [
+  "Cotton", "Wheat", "Rice", "Maize", "Soybean", "Sugarcane", "Groundnut",
+  "Mustard", "Chana", "Bajra", "Jowar", "Sunflower", "Tomato", "Onion", "Potato",
+];
