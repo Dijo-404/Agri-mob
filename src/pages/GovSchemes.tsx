@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Banknote, Shield, CreditCard, FileText, Sun, Store, X, Check, ChevronRight, ChevronLeft } from "lucide-react";
-import { govSchemes } from "@/data/mockData";
+import { Banknote, Shield, CreditCard, FileText, Sun, Store, X, Check, ChevronRight, ChevronLeft, ExternalLink, Newspaper, Search } from "lucide-react";
+import { govSchemes, govSchemeNews } from "@/data/mockData";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -31,9 +31,31 @@ const applicationSteps = [
   { id: 5, title: "Review", fields: [] },
 ];
 
+// Function to highlight matching text
+const highlightText = (text: string, query: string) => {
+  if (!query || !text) return text;
+  
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`(${escapedQuery})`, 'gi');
+  const parts = text.split(regex);
+  
+  return parts.map((part, index) => {
+    // Check if this part matches the query (case-insensitive)
+    if (part.toLowerCase() === query.toLowerCase()) {
+      return (
+        <mark key={index} className="bg-primary/20 text-primary font-medium px-0.5 rounded">
+          {part}
+        </mark>
+      );
+    }
+    return <span key={index}>{part}</span>;
+  });
+};
+
 export default function GovSchemes() {
   const [selectedScheme, setSelectedScheme] = useState<typeof govSchemes[0] | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     aadhaar: "",
@@ -45,6 +67,133 @@ export default function GovSchemes() {
     account: "",
     ifsc: "",
   });
+
+  // Safety check for govSchemes data
+  if (!govSchemes || govSchemes.length === 0) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-display font-bold text-foreground">Government Schemes</h1>
+          <p className="text-muted-foreground">Explore and apply for agricultural welfare schemes</p>
+        </div>
+        <div className="glass-card rounded-xl p-12 text-center">
+          <p className="text-muted-foreground">No schemes available at the moment.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Calculate relevance score for schemes
+  const calculateSchemeScore = (scheme: typeof govSchemes[0], query: string): number => {
+    let score = 0;
+    const queryLower = query.toLowerCase();
+    
+    const name = (scheme?.name || "").toLowerCase();
+    const fullName = (scheme?.fullName || "").toLowerCase();
+    const description = (scheme?.description || "").toLowerCase();
+    const benefits = Array.isArray(scheme?.benefits) 
+      ? scheme.benefits.join(" ").toLowerCase()
+      : (scheme?.benefits || "").toLowerCase();
+    const eligibility = typeof scheme?.eligibility === 'string'
+      ? scheme.eligibility.toLowerCase()
+      : Array.isArray(scheme?.eligibility)
+      ? scheme.eligibility.join(" ").toLowerCase()
+      : "";
+    
+    // Exact match in name (highest priority)
+    if (name === queryLower) score += 100;
+    else if (name.startsWith(queryLower)) score += 50;
+    else if (name.includes(queryLower)) score += 20;
+    
+    // Full name matches
+    if (fullName === queryLower) score += 80;
+    else if (fullName.startsWith(queryLower)) score += 40;
+    else if (fullName.includes(queryLower)) score += 15;
+    
+    // Description matches
+    if (description.startsWith(queryLower)) score += 30;
+    else if (description.includes(queryLower)) score += 10;
+    
+    // Benefits matches
+    if (benefits.includes(queryLower)) score += 5;
+    
+    // Eligibility matches
+    if (eligibility.includes(queryLower)) score += 5;
+    
+    return score;
+  };
+
+  // Filter and sort schemes based on search query
+  const filteredSchemes = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return govSchemes;
+    }
+    
+    const query = searchQuery.toLowerCase();
+    const schemesWithScores = govSchemes
+      .map(scheme => ({
+        scheme,
+        score: calculateSchemeScore(scheme, query)
+      }))
+      .filter(item => item.score > 0) // Only include matching schemes
+      .sort((a, b) => b.score - a.score) // Sort by score descending
+      .map(item => item.scheme); // Extract just the schemes
+    
+    return schemesWithScores;
+  }, [searchQuery]);
+
+  // Calculate relevance score for news
+  const calculateNewsScore = (news: typeof govSchemeNews[0], query: string): number => {
+    let score = 0;
+    const queryLower = query.toLowerCase();
+    
+    const title = (news?.title || "").toLowerCase();
+    const description = (news?.description || "").toLowerCase();
+    const category = (news?.category || "").toLowerCase();
+    const source = (news?.source || "").toLowerCase();
+    
+    // Exact match in title (highest priority)
+    if (title === queryLower) score += 100;
+    else if (title.startsWith(queryLower)) score += 50;
+    else if (title.includes(queryLower)) score += 20;
+    
+    // Category matches
+    if (category === queryLower) score += 40;
+    else if (category.startsWith(queryLower)) score += 30;
+    else if (category.includes(queryLower)) score += 15;
+    
+    // Description matches
+    if (description.startsWith(queryLower)) score += 30;
+    else if (description.includes(queryLower)) score += 10;
+    
+    // Source matches
+    if (source.includes(queryLower)) score += 5;
+    
+    return score;
+  };
+
+  // Filter and sort news based on search query
+  const filteredNews = useMemo(() => {
+    if (!govSchemeNews || govSchemeNews.length === 0) {
+      return [];
+    }
+    
+    if (!searchQuery.trim()) {
+      return govSchemeNews;
+    }
+    
+    const query = searchQuery.toLowerCase();
+    const newsWithScores = govSchemeNews
+      .map(news => ({
+        news,
+        score: calculateNewsScore(news, query)
+      }))
+      .filter(item => item.score > 0) // Only include matching news
+      .sort((a, b) => b.score - a.score) // Sort by score descending
+      .map(item => item.news); // Extract just the news
+    
+    return newsWithScores;
+  }, [searchQuery]);
 
   const handleApply = (scheme: typeof govSchemes[0]) => {
     setSelectedScheme(scheme);
@@ -88,10 +237,64 @@ export default function GovSchemes() {
         <p className="text-muted-foreground">Explore and apply for agricultural welfare schemes</p>
       </div>
 
+      {/* Search Bar */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <Input
+          placeholder="Search schemes, news, benefits, eligibility..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10"
+        />
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
+      </div>
+
       {/* Schemes Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {govSchemes.map((scheme, index) => {
-          const Icon = schemeIcons[scheme.icon] || FileText;
+        {filteredSchemes.length === 0 ? (
+          <div className="col-span-full glass-card rounded-xl p-12 text-center">
+            <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-muted-foreground font-medium">No schemes found</p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Try adjusting your search query
+            </p>
+          </div>
+        ) : (
+          filteredSchemes.map((scheme, index) => {
+          // Assign icon based on scheme name or use default
+          const schemeName = scheme?.name || "";
+          const iconKey = schemeName.includes("KISAN") || schemeName.includes("Kisan") 
+            ? "Banknote" 
+            : schemeName.includes("Bima") || schemeName.includes("Insurance")
+            ? "Shield"
+            : schemeName.includes("Credit") || schemeName.includes("Card")
+            ? "CreditCard"
+            : schemeName.includes("Health") || schemeName.includes("Soil")
+            ? "FileText"
+            : "FileText";
+          const Icon = schemeIcons[iconKey] || FileText;
+          
+          // Handle benefits - it's an array
+          const benefitsArray = Array.isArray(scheme?.benefits) 
+            ? scheme.benefits 
+            : scheme?.benefits 
+            ? [scheme.benefits] 
+            : [];
+          
+          // Handle eligibility - it's a string, not an array
+          const eligibilityText = typeof scheme?.eligibility === 'string' 
+            ? scheme.eligibility 
+            : Array.isArray(scheme?.eligibility) 
+            ? scheme.eligibility.join(", ") 
+            : "Not specified";
+          
           return (
             <motion.div
               key={scheme.id}
@@ -107,32 +310,45 @@ export default function GovSchemes() {
                   <Icon className="w-6 h-6 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-display font-semibold text-foreground">{scheme.name}</h3>
-                  <p className="text-xs text-muted-foreground">{scheme.fullName}</p>
+                  <h3 className="font-display font-semibold text-foreground">
+                    {searchQuery ? highlightText(scheme?.name || "Scheme", searchQuery) : (scheme?.name || "Scheme")}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    {searchQuery ? highlightText(scheme?.fullName || "", searchQuery) : (scheme?.fullName || "")}
+                  </p>
                 </div>
               </div>
 
               {/* Description */}
-              <p className="text-sm text-muted-foreground mb-4 flex-1">{scheme.description}</p>
+              <p className="text-sm text-muted-foreground mb-4 flex-1">
+                {searchQuery ? highlightText(scheme?.description || "No description available", searchQuery) : (scheme?.description || "No description available")}
+              </p>
 
               {/* Benefits */}
               <div className="bg-success/10 rounded-lg p-3 mb-4">
-                <p className="text-sm font-medium text-success">{scheme.benefits}</p>
+                <p className="text-xs font-medium text-success mb-1">Key Benefits:</p>
+                <ul className="text-xs text-success space-y-1">
+                  {benefitsArray.map((benefit, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-success mt-0.5">•</span>
+                      <span>{searchQuery ? highlightText(benefit, searchQuery) : benefit}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               {/* Eligibility Tags */}
-              <div className="flex flex-wrap gap-2 mb-4">
-                {scheme.eligibility.map((tag) => (
-                  <Badge key={tag} variant="outline" className="text-xs">
-                    {tag}
-                  </Badge>
-                ))}
+              <div className="mb-4">
+                <p className="text-xs font-medium text-foreground mb-2">Eligibility:</p>
+                <Badge variant="outline" className="text-xs">
+                  {searchQuery ? highlightText(eligibilityText, searchQuery) : eligibilityText}
+                </Badge>
               </div>
 
               {/* Deadline & Apply Button */}
               <div className="flex items-center justify-between pt-4 border-t border-border">
                 <span className="text-xs text-muted-foreground">
-                  Deadline: {scheme.deadline}
+                  Deadline: {scheme?.deadline || "N/A"}
                 </span>
                 <Button size="sm" onClick={() => handleApply(scheme)}>
                   Apply Now
@@ -140,8 +356,68 @@ export default function GovSchemes() {
               </div>
             </motion.div>
           );
-        })}
+          })
+        )}
       </div>
+
+      {/* Government Scheme News Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="space-y-4"
+      >
+        <div className="flex items-center gap-2 mb-4">
+          <Newspaper className="w-5 h-5 text-primary" />
+          <h2 className="text-xl font-display font-bold text-foreground">Latest Government Scheme News</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {filteredNews.length === 0 ? (
+            <div className="col-span-full glass-card rounded-xl p-8 text-center">
+              <Newspaper className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground font-medium">No news found</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                {searchQuery ? "Try adjusting your search query" : "No news available at the moment"}
+              </p>
+            </div>
+          ) : (
+            filteredNews.map((news, index) => (
+              <motion.div
+                key={news.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + index * 0.1 }}
+                className="glass-card rounded-xl p-5 hover:shadow-lg transition-all cursor-pointer group"
+                onClick={() => window.open(news.url, '_blank', 'noopener,noreferrer')}
+              >
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="flex-1">
+                    <Badge variant="outline" className="text-xs mb-2">
+                      {searchQuery ? highlightText(news.category, searchQuery) : news.category}
+                    </Badge>
+                    <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2">
+                      {searchQuery ? highlightText(news.title, searchQuery) : news.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                      {searchQuery ? highlightText(news.description, searchQuery) : news.description}
+                    </p>
+                  </div>
+                  <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 mt-1" />
+                </div>
+                <div className="flex items-center justify-between text-xs text-muted-foreground pt-3 border-t border-border">
+                  <span>{searchQuery ? highlightText(news.source, searchQuery) : news.source}</span>
+                  <span>{new Date(news.date).toLocaleDateString('en-IN', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                  })}</span>
+                </div>
+              </motion.div>
+            ))
+          )}
+        </div>
+      </motion.div>
 
       {/* Application Modal */}
       <Dialog open={!!selectedScheme} onOpenChange={handleClose}>

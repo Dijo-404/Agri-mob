@@ -15,6 +15,11 @@ import Helpline from "./pages/Helpline";
 import YieldPrediction from "./pages/YieldPrediction";
 import Weather from "./pages/Weather";
 import LearnFarmerCourse from "./pages/LearnFarmerCourse";
+import CropRotation from "./pages/CropRotation";
+import FarmingCalendar from "./pages/FarmingCalendar";
+import ProfitLoss from "./pages/ProfitLoss";
+import SoilTest from "./pages/SoilTest";
+import AIAssistant from "./pages/AIAssistant";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +42,11 @@ const App = () => (
             <Route path="/yield-prediction" element={<YieldPrediction />} />
             <Route path="/weather" element={<Weather />} />
             <Route path="/learn" element={<LearnFarmerCourse />} />
+            <Route path="/crop-rotation" element={<CropRotation />} />
+            <Route path="/farming-calendar" element={<FarmingCalendar />} />
+            <Route path="/profit-loss" element={<ProfitLoss />} />
+            <Route path="/soil-test" element={<SoilTest />} />
+            <Route path="/ai-assistant" element={<AIAssistant />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -114,16 +114,16 @@ export const recentActivity = [
 
 // Market Prices Table Data
 export const marketPrices = [
-  { id: 1, crop: "Cotton", variety: "DCH-32", state: "Maharashtra", price: 6850, unit: "quintal", trend: "up", change: 5.2 },
-  { id: 2, crop: "Wheat", variety: "HD-2967", state: "Punjab", price: 2275, unit: "quintal", trend: "stable", change: 0.5 },
-  { id: 3, crop: "Rice", variety: "Basmati", state: "Haryana", price: 4200, unit: "quintal", trend: "up", change: 3.8 },
-  { id: 4, crop: "Soybean", variety: "JS-335", state: "Madhya Pradesh", price: 4650, unit: "quintal", trend: "down", change: -2.1 },
-  { id: 5, crop: "Maize", variety: "DHM-117", state: "Karnataka", price: 2150, unit: "quintal", trend: "up", change: 1.5 },
-  { id: 6, crop: "Sugarcane", variety: "Co-0238", state: "Uttar Pradesh", price: 350, unit: "quintal", trend: "stable", change: 0 },
-  { id: 7, crop: "Groundnut", variety: "TG-37A", state: "Gujarat", price: 5800, unit: "quintal", trend: "up", change: 4.2 },
-  { id: 8, crop: "Mustard", variety: "RH-749", state: "Rajasthan", price: 5200, unit: "quintal", trend: "down", change: -1.8 },
-  { id: 9, crop: "Chana", variety: "JG-11", state: "Maharashtra", price: 4850, unit: "quintal", trend: "up", change: 2.9 },
-  { id: 10, crop: "Bajra", variety: "HHB-67", state: "Rajasthan", price: 2350, unit: "quintal", trend: "stable", change: 0.3 },
+  { id: 1, crop: "Cotton", variety: "DCH-32", state: "Maharashtra", mandi: "Yavatmal", price: 6850, unit: "quintal", trend: "up", change: 5.2 },
+  { id: 2, crop: "Wheat", variety: "HD-2967", state: "Punjab", mandi: "Ludhiana", price: 2275, unit: "quintal", trend: "stable", change: 0.5 },
+  { id: 3, crop: "Rice", variety: "Basmati", state: "Haryana", mandi: "Karnal", price: 4200, unit: "quintal", trend: "up", change: 3.8 },
+  { id: 4, crop: "Soybean", variety: "JS-335", state: "Madhya Pradesh", mandi: "Indore", price: 4650, unit: "quintal", trend: "down", change: -2.1 },
+  { id: 5, crop: "Maize", variety: "DHM-117", state: "Karnataka", mandi: "Hubli", price: 2150, unit: "quintal", trend: "up", change: 1.5 },
+  { id: 6, crop: "Sugarcane", variety: "Co-0238", state: "Uttar Pradesh", mandi: "Meerut", price: 350, unit: "quintal", trend: "stable", change: 0 },
+  { id: 7, crop: "Groundnut", variety: "TG-37A", state: "Gujarat", mandi: "Rajkot", price: 5800, unit: "quintal", trend: "up", change: 4.2 },
+  { id: 8, crop: "Mustard", variety: "RH-749", state: "Rajasthan", mandi: "Bharatpur", price: 5200, unit: "quintal", trend: "down", change: -1.8 },
+  { id: 9, crop: "Chana", variety: "JG-11", state: "Maharashtra", mandi: "Pune", price: 4850, unit: "quintal", trend: "up", change: 2.9 },
+  { id: 10, crop: "Bajra", variety: "HHB-67", state: "Rajasthan", mandi: "Jaipur", price: 2350, unit: "quintal", trend: "stable", change: 0.3 },
 ];
 
 // Forum Posts
@@ -250,6 +250,64 @@ export const trendingSchemes = [
   { name: "Fasal Bima", applications: "1.8L this week" },
   { name: "KCC Renewal", applications: "95K this week" },
   { name: "Subsidy Portal", applications: "67K this week" },
+];
+
+// Government Scheme News
+export const govSchemeNews = [
+  {
+    id: 1,
+    title: "PM-KISAN 17th Installment Released - ₹2,000 Direct Transfer",
+    description: "The Government of India has released the 17th installment of PM-KISAN scheme. Over 9 crore farmers to receive ₹2,000 directly in their bank accounts.",
+    date: "2025-12-01",
+    source: "Ministry of Agriculture",
+    url: "https://pmkisan.gov.in",
+    category: "PM-KISAN",
+  },
+  {
+    id: 2,
+    title: "PM Fasal Bima Yojana: Premium Rates Reduced for Kharif 2025",
+    description: "Government announces reduced premium rates for crop insurance. Farmers can now avail insurance at lower costs with enhanced coverage.",
+    date: "2025-11-28",
+    source: "Ministry of Agriculture",
+    url: "https://pmfby.gov.in",
+    category: "Insurance",
+  },
+  {
+    id: 3,
+    title: "Kisan Credit Card (KCC) Interest Subvention Extended",
+    description: "The interest subvention scheme for KCC has been extended. Farmers can avail loans at 4% interest rate for agricultural activities.",
+    date: "2025-11-25",
+    source: "RBI & Ministry of Agriculture",
+    url: "https://www.rbi.org.in",
+    category: "Credit",
+  },
+  {
+    id: 4,
+    title: "Soil Health Card Scheme: Free Testing for All Farmers",
+    description: "Government launches free soil health testing campaign. Farmers can get their soil tested and receive customized fertilizer recommendations.",
+    date: "2025-11-20",
+    source: "Department of Agriculture",
+    url: "https://soilhealth.dac.gov.in",
+    category: "Soil Health",
+  },
+  {
+    id: 5,
+    title: "New Subsidy on Drip Irrigation Systems - 55% Government Support",
+    description: "Enhanced subsidy scheme for micro-irrigation. Farmers can get up to 55% subsidy on drip and sprinkler irrigation systems.",
+    date: "2025-11-15",
+    source: "Ministry of Jal Shakti",
+    url: "https://pmksy.gov.in",
+    category: "Irrigation",
+  },
+  {
+    id: 6,
+    title: "Pradhan Mantri Kisan Maan Dhan Yojana: Pension Scheme for Farmers",
+    description: "Small and marginal farmers aged 18-40 can enroll for pension scheme. Monthly contribution of ₹55-200 for assured pension after 60 years.",
+    date: "2025-11-10",
+    source: "Ministry of Agriculture",
+    url: "https://maandhan.in",
+    category: "Pension",
+  },
 ];
 
 // Map Markers for Smart Mapping

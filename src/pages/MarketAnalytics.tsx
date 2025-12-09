@@ -49,10 +49,12 @@ export default function MarketAnalytics() {
     let result = [...marketPrices];
     
     if (search) {
+      const searchLower = search.toLowerCase();
       result = result.filter(p => 
-        p.crop.toLowerCase().includes(search.toLowerCase()) ||
-        p.variety.toLowerCase().includes(search.toLowerCase()) ||
-        p.mandi.toLowerCase().includes(search.toLowerCase())
+        (p.crop?.toLowerCase() || "").includes(searchLower) ||
+        (p.variety?.toLowerCase() || "").includes(searchLower) ||
+        (p.mandi?.toLowerCase() || "").includes(searchLower) ||
+        (p.state?.toLowerCase() || "").includes(searchLower)
       );
     }
     
@@ -151,36 +153,50 @@ export default function MarketAnalytics() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredPrices.map((item, index) => {
-                  const TrendIcon = trendIcons[item.trend as keyof typeof trendIcons];
-                  return (
-                    <motion.tr
-                      key={item.id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.05 * index }}
-                      className="hover:bg-muted/30"
-                    >
-                      <TableCell className="font-medium">{item.crop}</TableCell>
-                      <TableCell className="text-muted-foreground">{item.variety}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="text-xs">{item.state}</Badge>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">{item.mandi}</TableCell>
-                      <TableCell className="text-right font-semibold">
-                        ₹{item.price.toLocaleString()}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className={cn("flex items-center justify-end gap-1", trendColors[item.trend as keyof typeof trendColors])}>
-                          <TrendIcon className="w-4 h-4" />
-                          <span className="text-sm font-medium">
-                            {item.change > 0 ? "+" : ""}{item.change}%
-                          </span>
-                        </div>
-                      </TableCell>
-                    </motion.tr>
-                  );
-                })}
+                {filteredPrices.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center py-12">
+                      <div className="flex flex-col items-center justify-center gap-2">
+                        <Search className="w-8 h-8 text-muted-foreground" />
+                        <p className="text-muted-foreground font-medium">No results found</p>
+                        <p className="text-sm text-muted-foreground">
+                          Try adjusting your search or filters
+                        </p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  filteredPrices.map((item, index) => {
+                    const TrendIcon = trendIcons[item.trend as keyof typeof trendIcons];
+                    return (
+                      <motion.tr
+                        key={item.id}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.05 * index }}
+                        className="hover:bg-muted/30"
+                      >
+                        <TableCell className="font-medium">{item.crop}</TableCell>
+                        <TableCell className="text-muted-foreground">{item.variety}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="text-xs">{item.state}</Badge>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">{item.mandi || "N/A"}</TableCell>
+                        <TableCell className="text-right font-semibold">
+                          ₹{item.price.toLocaleString()}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className={cn("flex items-center justify-end gap-1", trendColors[item.trend as keyof typeof trendColors])}>
+                            <TrendIcon className="w-4 h-4" />
+                            <span className="text-sm font-medium">
+                              {item.change > 0 ? "+" : ""}{item.change}%
+                            </span>
+                          </div>
+                        </TableCell>
+                      </motion.tr>
+                    );
+                  })
+                )}
               </TableBody>
             </Table>
           </div>

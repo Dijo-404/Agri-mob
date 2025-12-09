@@ -16,14 +16,24 @@ import {
   BarChart3,
   Cloud,
   GraduationCap,
+  RotateCcw,
+  Calendar,
+  DollarSign,
+  TestTube,
+  Bot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
   { path: "/", label: "Dashboard", icon: LayoutDashboard },
+  { path: "/ai-assistant", label: "AI Assistant", icon: Bot },
   { path: "/field-management", label: "Field Management", icon: Layers },
+  { path: "/crop-rotation", label: "Crop Rotation", icon: RotateCcw },
+  { path: "/farming-calendar", label: "Farming Calendar", icon: Calendar },
+  { path: "/soil-test", label: "Soil Test", icon: TestTube },
   { path: "/market-analytics", label: "Market Analytics", icon: TrendingUp },
+  { path: "/profit-loss", label: "Profit & Loss", icon: DollarSign },
   { path: "/yield-prediction", label: "Yield Prediction", icon: BarChart3 },
   { path: "/weather", label: "Weather", icon: Cloud },
   { path: "/learn", label: "Learn Courses", icon: GraduationCap },
