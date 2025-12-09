@@ -191,15 +191,15 @@ export default function Dashboard() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 + idx * 0.05 }}
-                className="rounded-xl border glass-card frosted-border p-4 space-y-3"
+                className="rounded-xl border glass-card frosted-border p-4 flex flex-col gap-4 h-full"
               >
-                <div className="flex items-center justify-between">
-                  <div>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1">
                     <p className="text-xs uppercase tracking-wide text-muted-foreground">Field health</p>
-                    <p className="text-lg font-semibold text-foreground">{sensor.name}</p>
+                    <p className="text-lg font-semibold leading-tight text-foreground">{sensor.name}</p>
                   </div>
                   <div
-                    className={`px-2 py-1 text-xs rounded-full ${
+                    className={`px-2 py-1 text-xs rounded-full shrink-0 self-start ${
                       sensor.status === "online"
                         ? "bg-emerald-100 text-emerald-700"
                         : "bg-amber-100 text-amber-700"
@@ -208,23 +208,23 @@ export default function Dashboard() {
                     {sensor.status === "online" ? "online" : "attention"}
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-2 text-sm">
-                  <div className="rounded-lg bg-emerald-100/60 text-emerald-700 px-3 py-2">
+                <div className="grid grid-cols-3 gap-2 text-sm items-stretch">
+                  <div className="rounded-lg bg-emerald-100/60 text-emerald-700 px-3 py-2 flex flex-col justify-between">
                     <p className="text-[11px] uppercase tracking-wide">Moisture</p>
-                    <p className="text-lg font-semibold">{sensor.moisture}%</p>
+                    <p className="text-lg font-semibold leading-tight">{sensor.moisture}%</p>
                   </div>
-                  <div className="rounded-lg bg-amber-100/60 text-amber-700 px-3 py-2">
+                  <div className="rounded-lg bg-amber-100/60 text-amber-700 px-3 py-2 flex flex-col justify-between">
                     <p className="text-[11px] uppercase tracking-wide">Temp</p>
-                    <p className="text-lg font-semibold">{sensor.temperature}°C</p>
+                    <p className="text-lg font-semibold leading-tight">{sensor.temperature}°C</p>
                   </div>
-                  <div className="rounded-lg bg-sky-100/60 text-sky-700 px-3 py-2">
+                  <div className="rounded-lg bg-sky-100/60 text-sky-700 px-3 py-2 flex flex-col justify-between">
                     <p className="text-[11px] uppercase tracking-wide">Battery</p>
-                    <p className="text-lg font-semibold">{sensor.battery}%</p>
+                    <p className="text-lg font-semibold leading-tight">{sensor.battery}%</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Wind className="h-4 w-4 text-accent" />
-                  <span>pH {sensor.ph} · last 24h trend steady</span>
+                  <Wind className="h-4 w-4 text-accent shrink-0" />
+                  <span className="leading-tight">pH {sensor.ph} · last 24h trend steady</span>
                 </div>
               </motion.div>
             ))}
