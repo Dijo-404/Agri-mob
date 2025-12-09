@@ -10,6 +10,8 @@ import MarketAnalytics from "./pages/MarketAnalytics";
 import Community from "./pages/Community";
 import GovSchemes from "./pages/GovSchemes";
 import Settings from "./pages/Settings";
+import SmartMapping from "./pages/SmartMapping";
+import Helpline from "./pages/Helpline";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +29,8 @@ const App = () => (
             <Route path="/market-analytics" element={<MarketAnalytics />} />
             <Route path="/community" element={<Community />} />
             <Route path="/gov-schemes" element={<GovSchemes />} />
+            <Route path="/smart-mapping" element={<SmartMapping />} />
+            <Route path="/helpline" element={<Helpline />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

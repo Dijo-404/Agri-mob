@@ -21,6 +21,8 @@ const navItems = [
   { path: "/market-analytics", label: "Market Analytics", icon: TrendingUp },
   { path: "/community", label: "Community Forum", icon: Users },
   { path: "/gov-schemes", label: "Gov Schemes", icon: FileText },
+  { path: "/smart-mapping", label: "Smart Mapping", icon: Map },
+  { path: "/helpline", label: "Helpline", icon: Leaf },
   { path: "/settings", label: "Settings", icon: Settings },
 ];
 

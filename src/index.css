@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -136,6 +136,21 @@
 
   .stat-card {
     @apply glass-card-hover rounded-xl p-6;
+  }
+
+  .tile-card {
+    @apply rounded-2xl text-white shadow-[0_25px_70px_-30px_rgba(0,0,0,0.5)] p-5 md:p-6 relative overflow-hidden;
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
+  }
+
+  .tile-arrow {
+    @apply absolute right-4 top-4 text-white/70;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(6px);
   }
 
   .mesh-overlay {

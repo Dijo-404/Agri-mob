@@ -14,6 +14,9 @@ import {
 } from "lucide-react";
 import { YieldChart } from "@/components/dashboard/YieldChart";
 import { WeatherWidget } from "@/components/dashboard/WeatherWidget";
+import { WeatherSummary } from "@/components/dashboard/WeatherSummary";
+import { WeatherForecastStrip } from "@/components/dashboard/WeatherForecastStrip";
+import { FeatureTiles } from "@/components/dashboard/FeatureTiles";
 import { sensorData, dashboardStats, recentActivity, weatherData } from "@/data/mockData";
 
 type TileTone = "emerald" | "amber" | "sky";
@@ -159,6 +162,18 @@ export default function Dashboard() {
         </div>
       </section>
 
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+        <div className="lg:col-span-2 space-y-4 h-full flex flex-col">
+          <WeatherSummary city={weatherData.current.location.split(",")[0]} />
+          <WeatherForecastStrip days={5} />
+        </div>
+        <div className="h-full">
+          <WeatherWidget />
+        </div>
+      </div>
+
+      <FeatureTiles />
+
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         <div className="xl:col-span-2 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -175,13 +190,8 @@ export default function Dashboard() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            <div className="lg:col-span-3">
-              <YieldChart />
-            </div>
-            <div className="lg:col-span-2">
-              <WeatherWidget />
-            </div>
+          <div className="grid grid-cols-1 gap-6">
+            <YieldChart />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">

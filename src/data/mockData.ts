@@ -230,6 +230,53 @@ export const weatherData = {
   ],
 };
 
+// Map markers across India
+export const mapMarkers = [
+  { id: "delhi", name: "Delhi", lat: 28.6139, lng: 77.209, type: "market" },
+  { id: "nagpur", name: "Nagpur", lat: 21.1466, lng: 79.0888, type: "weather" },
+  { id: "pune", name: "Pune", lat: 18.5204, lng: 73.8567, type: "iot" },
+  { id: "bengaluru", name: "Bengaluru", lat: 12.9716, lng: 77.5946, type: "forecast" },
+  { id: "jaipur", name: "Jaipur", lat: 26.9124, lng: 75.7873, type: "market" },
+  { id: "bhubaneswar", name: "Bhubaneswar", lat: 20.2961, lng: 85.8245, type: "alert" },
+  { id: "ahmedabad", name: "Ahmedabad", lat: 23.0225, lng: 72.5714, type: "iot" },
+  { id: "lucknow", name: "Lucknow", lat: 26.8467, lng: 80.9462, type: "market" },
+  { id: "patna", name: "Patna", lat: 25.5941, lng: 85.1376, type: "rain" },
+  { id: "hyderabad", name: "Hyderabad", lat: 17.385, lng: 78.4867, type: "market" },
+];
+
+export const helplines = [
+  {
+    state: "Andhra Pradesh",
+    category: "Consumer Affairs",
+    numbers: ["1800-425-0082", "1800-425-2977"],
+    website: "cphfs.in",
+  },
+  {
+    state: "Arunachal Pradesh",
+    category: "Agriculture Dept",
+    numbers: ["1800-345-3601"],
+    website: "",
+  },
+  {
+    state: "Maharashtra",
+    category: "Farmer Helpline",
+    numbers: ["1800-233-4000"],
+    website: "mahafarm.gov.in",
+  },
+  {
+    state: "Tamil Nadu",
+    category: "Krishi Call Center",
+    numbers: ["1551"],
+    website: "",
+  },
+  {
+    state: "Karnataka",
+    category: "Consumer Affairs",
+    numbers: ["1800-425-9339"],
+    website: "",
+  },
+];
+
 // Forum categories
 export const forumCategories = [
   { id: 1, name: "Pest Control", count: 234, icon: "Bug" },
