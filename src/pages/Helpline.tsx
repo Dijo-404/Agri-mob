@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { PhoneCall, Search, Globe, MapPin, Info } from "lucide-react";
+import { PhoneCall, Search, Globe, MapPin, Info, X } from "lucide-react";
 import { helplines } from "@/data/mockData";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -42,13 +42,22 @@ export default function Helpline() {
       <div className="glass-card frosted-border rounded-2xl p-5">
         <div className="flex flex-col md:flex-row md:items-center gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search helplines by state, category or number..."
-              className="pl-10 pr-4 bg-card/70 border border-white/15 rounded-full"
+              className="pl-10 pr-10 bg-card/70 border border-white/15 rounded-full"
             />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4" />

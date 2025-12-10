@@ -12,18 +12,18 @@ type Feature = {
 };
 
 const features: Feature[] = [
-  { title: "Crop Recommendation", description: "AI-powered crop suggestions", to: "/field-management", icon: Sprout, gradient: "from-emerald-500 to-lime-500" },
-  { title: "Disease Detection", description: "Upload leaf images to detect diseases", to: "/community", icon: ShieldCheck, gradient: "from-rose-500 to-orange-500" },
-  { title: "Pest Detection", description: "Identify pests and controls", to: "/community", icon: Bug, gradient: "from-purple-500 to-indigo-500" },
+  { title: "Crop Recommendation", description: "AI-powered crop suggestions", to: "/crop-recommendation", icon: Sprout, gradient: "from-emerald-500 to-lime-500" },
+  { title: "Disease Detection", description: "Upload leaf images to detect diseases", to: "/disease-prediction", icon: ShieldCheck, gradient: "from-rose-500 to-orange-500" },
+  { title: "Pest Detection", description: "Identify pests and controls", to: "/pest-detection", icon: Bug, gradient: "from-purple-500 to-indigo-500" },
   { title: "Market Prices", description: "Real-time mandi insights", to: "/market-analytics", icon: TrendingUp, gradient: "from-sky-500 to-blue-500" },
-  { title: "AI Assistant", description: "Ask anything about your farm", to: "/community", icon: Sparkles, gradient: "from-pink-500 to-fuchsia-500" },
-  { title: "Profit & Loss", description: "Track farm profitability", to: "/market-analytics", icon: Calculator, gradient: "from-amber-500 to-orange-500" },
+  { title: "AI Assistant", description: "Ask anything about your farm", to: "/ai-assistant", icon: Sparkles, gradient: "from-pink-500 to-fuchsia-500" },
+  { title: "Profit & Loss", description: "Track farm profitability", to: "/profit-loss", icon: Calculator, gradient: "from-amber-500 to-orange-500" },
   { title: "Weather", description: "7-day forecast at a glance", to: "/weather", icon: CloudSun, gradient: "from-cyan-500 to-teal-500" },
   { title: "Community", description: "Join groups and chat", to: "/community", icon: Users, gradient: "from-emerald-500 to-teal-500" },
   { title: "SmartMapping", description: "Geospatial farm insights", to: "/smart-mapping", icon: Map, gradient: "from-blue-500 to-cyan-500" },
   { title: "Yield Prediction", description: "Predict crop yield", to: "/yield-prediction", icon: Layers, gradient: "from-lime-500 to-green-500" },
   { title: "Learn Courses", description: "Enhance farming knowledge", to: "/learn", icon: BookOpenCheck, gradient: "from-indigo-500 to-purple-500" },
-  { title: "Soil Test", description: "Analyze soil quality", to: "/field-management", icon: FlaskConical, gradient: "from-amber-600 to-amber-400" },
+  { title: "Soil Test", description: "Analyze soil quality", to: "/soil-test", icon: FlaskConical, gradient: "from-amber-600 to-amber-400" },
   { title: "Gov Schemes", description: "Access programs quickly", to: "/gov-schemes", icon: BookOpenCheck, gradient: "from-indigo-500 to-blue-500" },
   { title: "Helpline", description: "State-wise support numbers", to: "/helpline", icon: PhoneCall, gradient: "from-rose-500 to-red-500" },
 ];

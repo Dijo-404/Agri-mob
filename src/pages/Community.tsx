@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { ThumbsUp, MessageCircle, Share2, Bug, Sprout, Tractor, Droplets, Landmark } from "lucide-react";
+import { ThumbsUp, MessageCircle, Share2, Bug, Sprout, Tractor, Droplets, Landmark, Search, X } from "lucide-react";
 import { forumPosts, forumCategories, govSchemes } from "@/data/mockData";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 
 const categoryIcons: Record<string, typeof Bug> = {
   "Pest Control": Bug,
@@ -19,6 +20,7 @@ const categoryIcons: Record<string, typeof Bug> = {
 export default function Community() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [upvotedPosts, setUpvotedPosts] = useState<number[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleUpvote = (postId: number) => {
     setUpvotedPosts(prev => 
@@ -28,9 +30,23 @@ export default function Community() {
     );
   };
 
-  const filteredPosts = selectedCategory
-    ? forumPosts.filter(post => post.category === selectedCategory)
-    : forumPosts;
+  const filteredPosts = useMemo(() => {
+    let posts = selectedCategory
+      ? forumPosts.filter(post => post.category === selectedCategory)
+      : forumPosts;
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      posts = posts.filter(post =>
+        post.title.toLowerCase().includes(query) ||
+        post.content.toLowerCase().includes(query) ||
+        post.author.toLowerCase().includes(query) ||
+        post.category.toLowerCase().includes(query)
+      );
+    }
+
+    return posts;
+  }, [selectedCategory, searchQuery]);
 
   return (
     <motion.div
@@ -43,6 +59,27 @@ export default function Community() {
       <div>
         <h1 className="text-2xl font-display font-bold text-foreground">Community Forum</h1>
         <p className="text-muted-foreground">Connect with fellow farmers and share knowledge</p>
+      </div>
+
+      {/* Search Bar */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <Input
+          placeholder="Search posts, topics, authors..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10 pr-10"
+        />
+        {searchQuery && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
+            onClick={() => setSearchQuery("")}
+          >
+            <X className="w-4 h-4" />
+          </Button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -86,7 +123,27 @@ export default function Community() {
 
         {/* Posts Feed */}
         <div className="lg:col-span-2 space-y-4">
-          {filteredPosts.map((post, index) => (
+          {filteredPosts.length === 0 ? (
+            <div className="glass-card rounded-xl p-12 text-center">
+              <Search className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">No posts found</h3>
+              <p className="text-muted-foreground">
+                {searchQuery 
+                  ? `No posts match your search "${searchQuery}". Try different keywords.`
+                  : "No posts in this category yet."}
+              </p>
+              {searchQuery && (
+                <Button
+                  variant="outline"
+                  className="mt-4"
+                  onClick={() => setSearchQuery("")}
+                >
+                  Clear Search
+                </Button>
+              )}
+            </div>
+          ) : (
+            filteredPosts.map((post, index) => (
             <motion.div
               key={post.id}
               initial={{ opacity: 0, y: 20 }}
@@ -151,7 +208,8 @@ export default function Community() {
                 </Button>
               </div>
             </motion.div>
-          ))}
+            ))
+          )}
         </div>
 
         {/* Trending Schemes Sidebar */}

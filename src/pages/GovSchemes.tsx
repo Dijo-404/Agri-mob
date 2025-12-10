@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 const schemeIcons: Record<string, typeof Banknote> = {
   Banknote,
@@ -53,6 +54,7 @@ const highlightText = (text: string, query: string) => {
 };
 
 export default function GovSchemes() {
+  const { toast } = useToast();
   const [selectedScheme, setSelectedScheme] = useState<typeof govSchemes[0] | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -200,6 +202,54 @@ export default function GovSchemes() {
     setCurrentStep(1);
   };
 
+  const handleSubmit = () => {
+    // Validate required fields
+    if (!formData.name || !formData.aadhaar || !formData.phone) {
+      toast({
+        title: "Missing information",
+        description: "Please fill in all required fields in step 1",
+        variant: "destructive",
+      });
+      setCurrentStep(1);
+      return;
+    }
+    if (!formData.survey || !formData.area || !formData.district) {
+      toast({
+        title: "Missing information",
+        description: "Please fill in all land details in step 2",
+        variant: "destructive",
+      });
+      setCurrentStep(2);
+      return;
+    }
+    if (!formData.bank || !formData.account || !formData.ifsc) {
+      toast({
+        title: "Missing information",
+        description: "Please fill in all bank details in step 3",
+        variant: "destructive",
+      });
+      setCurrentStep(3);
+      return;
+    }
+
+    // Simulate API submission
+    toast({
+      title: "Application submitted successfully!",
+      description: `Your application for ${selectedScheme?.name} has been submitted. You will receive a confirmation SMS shortly.`,
+    });
+
+    // Save to localStorage for reference
+    const applications = JSON.parse(localStorage.getItem("govSchemeApplications") || "[]");
+    applications.push({
+      scheme: selectedScheme?.name,
+      ...formData,
+      submittedAt: new Date().toISOString(),
+    });
+    localStorage.setItem("govSchemeApplications", JSON.stringify(applications));
+
+    handleClose();
+  };
+
   const handleClose = () => {
     setSelectedScheme(null);
     setCurrentStep(1);
@@ -244,7 +294,7 @@ export default function GovSchemes() {
           placeholder="Search schemes, news, benefits, eligibility..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10"
+          className="pl-10 pr-10"
         />
         {searchQuery && (
           <button
@@ -622,7 +672,7 @@ export default function GovSchemes() {
                 <ChevronRight className="w-4 h-4 ml-2" />
               </Button>
             ) : (
-              <Button onClick={handleClose} className="bg-success hover:bg-success/90">
+              <Button onClick={handleSubmit} className="bg-success hover:bg-success/90">
                 <Check className="w-4 h-4 mr-2" />
                 Submit Application
               </Button>

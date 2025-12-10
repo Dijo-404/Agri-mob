@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp, TrendingDown, Minus, Search, Filter, Calculator } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, Search, Filter, Calculator, X } from "lucide-react";
 import { marketPrices } from "@/data/mockData";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -107,13 +107,22 @@ export default function MarketAnalytics() {
           {/* Filters */}
           <div className="flex flex-wrap gap-4 mb-6">
             <div className="relative flex-1 min-w-[200px]">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
               <Input
                 placeholder="Search crops, varieties..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10"
+                className="pl-10 pr-10"
               />
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
             </div>
             <Select value={stateFilter} onValueChange={setStateFilter}>
               <SelectTrigger className="w-[180px]">

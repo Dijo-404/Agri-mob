@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { User, Bell, Globe, Moon, Sun, Wifi, MapPin, Leaf, Save, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,14 +13,30 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function Settings() {
   const { toast } = useToast();
-  const [isDark, setIsDark] = useState(false);
-  const [notifications, setNotifications] = useState({
+  
+  // Load from localStorage or use defaults
+  const loadSettings = () => {
+    const saved = localStorage.getItem("agrismartSettings");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("Failed to load settings", e);
+      }
+    }
+    return null;
+  };
+
+  const savedSettings = loadSettings();
+  
+  const [isDark, setIsDark] = useState(savedSettings?.isDark || false);
+  const [notifications, setNotifications] = useState(savedSettings?.notifications || {
     sms: true,
     push: true,
     email: false,
   });
-  const [language, setLanguage] = useState("en");
-  const [farmData, setFarmData] = useState({
+  const [language, setLanguage] = useState(savedSettings?.language || "en");
+  const [farmData, setFarmData] = useState(savedSettings?.farmData || {
     name: "Patil Farms",
     location: "Nagpur, Maharashtra",
     area: "30",
@@ -33,7 +49,34 @@ export default function Settings() {
     { id: "ESP32-004", name: "Field C - West", status: "low_battery" },
   ]);
 
+  // Save settings to localStorage
+  useEffect(() => {
+    const settings = {
+      isDark,
+      notifications,
+      language,
+      farmData,
+    };
+    localStorage.setItem("agrismartSettings", JSON.stringify(settings));
+  }, [isDark, notifications, language, farmData]);
+
+  // Apply dark mode on mount
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDark]);
+
   const handleSave = () => {
+    const settings = {
+      isDark,
+      notifications,
+      language,
+      farmData,
+    };
+    localStorage.setItem("agrismartSettings", JSON.stringify(settings));
     toast({
       title: "Settings saved",
       description: "Your preferences have been updated successfully.",
@@ -43,6 +86,16 @@ export default function Settings() {
   const toggleTheme = () => {
     setIsDark(!isDark);
     document.documentElement.classList.toggle("dark");
+  };
+
+  const handleAddCrop = () => {
+    const cropName = prompt("Enter crop name:");
+    if (cropName && cropName.trim() && !farmData.crops.includes(cropName.trim())) {
+      setFarmData({
+        ...farmData,
+        crops: [...farmData.crops, cropName.trim()],
+      });
+    }
   };
 
   return (
@@ -224,7 +277,7 @@ export default function Settings() {
                   <Leaf className="w-5 h-5 text-success" />
                   <h3 className="font-display font-semibold text-foreground">Primary Crops</h3>
                 </div>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={handleAddCrop}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add Crop
                 </Button>

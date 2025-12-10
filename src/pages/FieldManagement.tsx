@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer, YAxis } from "recharts";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 import { sensorData } from "@/data/mockData";
 
 // Sparkline Chart Component
@@ -106,7 +108,27 @@ function SensorCard({ sensor, delay }: { sensor: typeof sensorData[0]; delay: nu
 }
 
 export default function FieldManagement() {
+  const { toast } = useToast();
   const [selectedLayer, setSelectedLayer] = useState<"satellite" | "terrain" | "hybrid">("satellite");
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleSyncSensors = async () => {
+    setIsRefreshing(true);
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setIsRefreshing(false);
+    toast({
+      title: "Sensors synced",
+      description: "Latest sensor data has been updated",
+    });
+  };
+
+  const handleAddMarker = () => {
+    toast({
+      title: "Marker added",
+      description: "New field marker has been added to the map",
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -117,11 +139,16 @@ export default function FieldManagement() {
           <p className="text-muted-foreground">IoT sensors & satellite monitoring</p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm">
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Sync Sensors
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={handleSyncSensors}
+            disabled={isRefreshing}
+          >
+            <RefreshCw className={cn("w-4 h-4 mr-2", isRefreshing && "animate-spin")} />
+            {isRefreshing ? "Syncing..." : "Sync Sensors"}
           </Button>
-          <Button size="sm">
+          <Button size="sm" onClick={handleAddMarker}>
             <MapPin className="w-4 h-4 mr-2" />
             Add Marker
           </Button>

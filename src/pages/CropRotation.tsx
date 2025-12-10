@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { RotateCcw, Calendar, TrendingUp, Info, Plus, X } from "lucide-react";
+import { RotateCcw, Calendar, TrendingUp, Info, Plus, X, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 const cropRotationPlans = [
@@ -42,20 +43,71 @@ const cropCompatibility = {
 };
 
 export default function CropRotation() {
+  const { toast } = useToast();
   const [selectedField, setSelectedField] = useState("");
   const [currentCrop, setCurrentCrop] = useState("");
   const [rotationPlan, setRotationPlan] = useState<string[]>([]);
   const [customPlan, setCustomPlan] = useState("");
+  const [savedPlans, setSavedPlans] = useState<Record<string, string[]>>({});
+
+  // Load saved plans from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("cropRotationPlans");
+    if (saved) {
+      try {
+        setSavedPlans(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to load saved plans", e);
+      }
+    }
+  }, []);
+
+  // Load plan when field is selected
+  useEffect(() => {
+    if (selectedField && savedPlans[selectedField]) {
+      setRotationPlan(savedPlans[selectedField]);
+    } else if (selectedField) {
+      setRotationPlan([]);
+    }
+  }, [selectedField, savedPlans]);
 
   const handleAddCrop = () => {
-    if (customPlan && !rotationPlan.includes(customPlan)) {
-      setRotationPlan([...rotationPlan, customPlan]);
+    if (customPlan.trim() && !rotationPlan.includes(customPlan.trim())) {
+      setRotationPlan([...rotationPlan, customPlan.trim()]);
       setCustomPlan("");
     }
   };
 
   const handleRemoveCrop = (crop: string) => {
     setRotationPlan(rotationPlan.filter(c => c !== crop));
+  };
+
+  const handleSavePlan = () => {
+    if (!selectedField) {
+      toast({
+        title: "Field not selected",
+        description: "Please select a field first",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (rotationPlan.length === 0) {
+      toast({
+        title: "Plan is empty",
+        description: "Please add crops to your rotation plan",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const updatedPlans = { ...savedPlans, [selectedField]: rotationPlan };
+    setSavedPlans(updatedPlans);
+    localStorage.setItem("cropRotationPlans", JSON.stringify(updatedPlans));
+    
+    toast({
+      title: "Plan saved successfully",
+      description: `Rotation plan for ${selectedField} has been saved`,
+    });
   };
 
   const getCompatibleCrops = (crop: string) => {
@@ -127,7 +179,16 @@ export default function CropRotation() {
                   <p className="text-sm font-medium mb-2">Recommended Next Crops:</p>
                   <div className="flex flex-wrap gap-2">
                     {getCompatibleCrops(currentCrop.charAt(0).toUpperCase() + currentCrop.slice(1)).map((crop) => (
-                      <Badge key={crop} variant="outline" className="cursor-pointer hover:bg-primary/10">
+                      <Badge 
+                        key={crop} 
+                        variant="outline" 
+                        className="cursor-pointer hover:bg-primary/10"
+                        onClick={() => {
+                          if (!rotationPlan.includes(crop)) {
+                            setRotationPlan([...rotationPlan, crop]);
+                          }
+                        }}
+                      >
                         {crop}
                       </Badge>
                     ))}
@@ -166,7 +227,14 @@ export default function CropRotation() {
                 )}
               </div>
 
-              <Button className="w-full">Save Rotation Plan</Button>
+              <Button 
+                className="w-full" 
+                onClick={handleSavePlan}
+                disabled={!selectedField || rotationPlan.length === 0}
+              >
+                <CheckCircle2 className="w-4 h-4 mr-2" />
+                Save Rotation Plan
+              </Button>
             </CardContent>
           </Card>
 
