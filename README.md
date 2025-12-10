@@ -48,6 +48,10 @@ Routes:
 
 By default Vite proxies `/api/disease` → `http://localhost:8000`. To point elsewhere, set `VITE_DISEASE_API_URL`.
 
+### Deployment note
+- Frontend (Vercel/Netlify/etc.): the `.vercelignore` excludes `api/` and `Models/` so the static site deploy stays light. Configure `VITE_DISEASE_API_URL` to the hosted FastAPI endpoint.
+- Backend: deploy `api/main.py` + `Models/` on a Python host (Railway/Fly/Render/VM). Ensure the same env vars are set there.
+
 ### Environment Variables (web)
 
 Add a `.env` file in the repo root:
