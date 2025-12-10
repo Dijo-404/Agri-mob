@@ -24,6 +24,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 
 interface Notification {
@@ -42,6 +43,7 @@ interface TopBarProps {
 export function TopBar({ onMenuClick }: TopBarProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, signOut } = useAuth();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [globalSearchQuery, setGlobalSearchQuery] = useState("");
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -80,13 +82,10 @@ export function TopBar({ onMenuClick }: TopBarProps) {
     });
   };
 
-  const handleLogout = () => {
-    toast({
-      title: "Logged out successfully",
-      description: "You have been logged out of your account",
-    });
+  const handleLogout = async () => {
     setShowLogoutDialog(false);
-    // In a real app, you would clear session/tokens here
+    await signOut();
+    navigate('/login');
   };
 
   const getNotificationIcon = (type: string) => {
@@ -326,12 +325,18 @@ export function TopBar({ onMenuClick }: TopBarProps) {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 h-10 sm:h-11">
               <Avatar className="w-7 h-7 sm:w-8 sm:h-8">
-                <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=farmer" />
-                <AvatarFallback className="bg-primary text-primary-foreground text-xs sm:text-sm">RP</AvatarFallback>
+                <AvatarImage src={user?.user_metadata?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email}`} />
+                <AvatarFallback className="bg-primary text-primary-foreground text-xs sm:text-sm">
+                  {user?.user_metadata?.full_name?.charAt(0) || user?.email?.charAt(0).toUpperCase() || 'U'}
+                </AvatarFallback>
               </Avatar>
               <div className="hidden sm:block text-left">
-                <p className="text-xs sm:text-sm font-medium">Ravi Patel</p>
-                <p className="text-xs text-muted-foreground hidden md:block">Maharashtra</p>
+                <p className="text-xs sm:text-sm font-medium">
+                  {user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User'}
+                </p>
+                <p className="text-xs text-muted-foreground hidden md:block">
+                  {user?.email || 'No email'}
+                </p>
               </div>
               <ChevronDown className="w-4 h-4 text-muted-foreground hidden sm:block" />
             </Button>
