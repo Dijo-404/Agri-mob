@@ -29,6 +29,25 @@ npm run dev
 # opens on http://localhost:5173 by default (port may differ)
 ```
 
+### Plant Disease API (FastAPI + PyTorch)
+
+```sh
+# one-time: create venv
+cd /home/dijo404/git/Agri-mob
+python -m venv .venv
+source .venv/bin/activate
+pip install -r api/requirements.txt
+
+# run the inference API
+uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Routes:
+- `GET /api/disease/health`
+- `POST /api/disease/predict` (multipart with `file`, optional `crop_type`)
+
+By default Vite proxies `/api/disease` → `http://localhost:8000`. To point elsewhere, set `VITE_DISEASE_API_URL`.
+
 ### Environment Variables (web)
 
 Add a `.env` file in the repo root:

@@ -15,46 +15,10 @@ interface DiseaseResult {
   description: string;
   treatment: string[];
   prevention: string[];
+  inference_ms?: number;
 }
 
-const sampleDiseases: DiseaseResult[] = [
-  {
-    disease: "Leaf Rust",
-    confidence: 92,
-    severity: "high",
-    description: "Fungal disease causing orange-brown pustules on leaves. Common in wheat crops during humid conditions.",
-    treatment: [
-      "Apply fungicide containing Propiconazole or Tebuconazole",
-      "Spray at 0.1% concentration, repeat after 15 days",
-      "Remove and destroy severely infected leaves",
-      "Ensure proper spacing for air circulation",
-    ],
-    prevention: [
-      "Use disease-resistant varieties",
-      "Avoid overhead irrigation",
-      "Maintain proper plant spacing",
-      "Apply preventive fungicide before disease onset",
-    ],
-  },
-  {
-    disease: "Powdery Mildew",
-    confidence: 88,
-    severity: "medium",
-    description: "White powdery growth on leaves and stems. Thrives in warm, dry conditions with high humidity.",
-    treatment: [
-      "Apply sulfur-based fungicide",
-      "Use neem oil solution (2-3%)",
-      "Remove infected plant parts",
-      "Improve air circulation",
-    ],
-    prevention: [
-      "Plant resistant varieties",
-      "Avoid dense planting",
-      "Water at base, not on leaves",
-      "Maintain proper nutrition",
-    ],
-  },
-];
+const API_BASE = import.meta.env.VITE_DISEASE_API_URL || "/api/disease";
 
 export default function DiseasePrediction() {
   const { toast } = useToast();
@@ -96,7 +60,7 @@ export default function DiseasePrediction() {
   };
 
   const handlePredict = async () => {
-    if (!selectedImage || !cropType) {
+    if (!imageFile || !cropType) {
       toast({
         title: "Missing information",
         description: "Please upload an image and select crop type",
@@ -106,19 +70,44 @@ export default function DiseasePrediction() {
     }
 
     setLoading(true);
-    
-    // Simulate AI prediction
-    await new Promise((resolve) => setTimeout(resolve, 2500));
+    try {
+      const formData = new FormData();
+      formData.append("file", imageFile);
+      formData.append("crop_type", cropType);
 
-    // Randomly select a disease result
-    const randomDisease = sampleDiseases[Math.floor(Math.random() * sampleDiseases.length)];
-    setResult(randomDisease);
-    setLoading(false);
+      const response = await fetch(`${API_BASE}/predict`, {
+        method: "POST",
+        body: formData,
+      });
 
-    toast({
-      title: "Analysis complete",
-      description: `Detected: ${randomDisease.disease} with ${randomDisease.confidence}% confidence`,
-    });
+      if (!response.ok) {
+        const errorText = await response.text();
+        let message = errorText || "Prediction failed";
+        try {
+          const parsed = JSON.parse(errorText);
+          message = parsed.detail || parsed.message || message;
+        } catch {
+          // no-op
+        }
+        throw new Error(message);
+      }
+
+      const data: DiseaseResult = await response.json();
+      setResult(data);
+      toast({
+        title: "Analysis complete",
+        description: `Detected: ${data.disease} with ${data.confidence}% confidence`,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Prediction failed",
+        description: error instanceof Error ? error.message : "Unable to analyze image",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleRemoveImage = () => {
@@ -227,7 +216,7 @@ export default function DiseasePrediction() {
               <Button
                 onClick={handlePredict}
                 className="w-full"
-                disabled={!selectedImage || !cropType || loading}
+                disabled={!imageFile || !cropType || loading}
               >
                 {loading ? (
                   <>
@@ -301,6 +290,9 @@ export default function DiseasePrediction() {
                       <Badge variant="outline">
                         {result.confidence}% Confidence
                       </Badge>
+                      {result.inference_ms !== undefined && (
+                        <Badge variant="outline">~{result.inference_ms} ms</Badge>
+                      )}
                     </div>
                   </div>
                   {result.severity === "high" ? (
