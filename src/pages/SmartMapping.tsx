@@ -59,7 +59,8 @@ export default function SmartMapping() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-xs uppercase tracking-wide text-muted-foreground">SmartMapping</p>
-            <h1 className="text-2xl font-display font-semibold text-foreground">Interactive India map · tap markers for details</h1>
+            <h1 className="text-2xl font-display font-semibold text-foreground">Major Agricultural Markets in India</h1>
+            <p className="text-sm text-muted-foreground mt-1">Click on green markers to view market details</p>
           </div>
           <MapPin className="h-5 w-5 text-accent" />
         </div>
@@ -96,15 +97,20 @@ export default function SmartMapping() {
                 icon={createColoredIcon(markerColors[marker.type] || "#6b7280")}
               >
                 <Popup>
-                  <div className="min-w-[180px] space-y-2 p-1">
+                  <div className="min-w-[200px] max-w-[280px] space-y-2 p-1">
                     <div className="flex items-center gap-2">
-                      <Icon className="h-4 w-4" style={{ color: markerColors[marker.type] }} />
-                      <span className="font-semibold">{marker.name}</span>
+                      <Icon className="h-4 w-4 flex-shrink-0" style={{ color: markerColors[marker.type] }} />
+                      <span className="font-semibold text-sm">{marker.name}</span>
                     </div>
                     <Badge variant="outline" className="text-xs">
-                      {typeLabels[marker.type]}
+                      {typeLabels[marker.type] || "Agricultural Market"}
                     </Badge>
-                    <p className="text-xs text-muted-foreground">{marker.details}</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{marker.details}</p>
+                    {marker.status && (
+                      <Badge variant={marker.status === "active" ? "default" : "secondary"} className="text-xs mt-1">
+                        {marker.status === "active" ? "Active Market" : marker.status}
+                      </Badge>
+                    )}
                   </div>
                 </Popup>
               </Marker>

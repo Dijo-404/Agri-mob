@@ -312,14 +312,22 @@ export const govSchemeNews = [
 
 // Map Markers for Smart Mapping
 export const mapMarkers = [
-  { id: 1, lat: 20.0114, lng: 73.7803, type: "field", name: "Field A - Cotton", area: "5 acres", status: "healthy" },
-  { id: 2, lat: 20.0134, lng: 73.7823, type: "field", name: "Field B - Wheat", area: "3 acres", status: "needs_water" },
-  { id: 3, lat: 20.0094, lng: 73.7783, type: "sensor", name: "Moisture Sensor 1", value: "45%", status: "normal" },
-  { id: 4, lat: 20.0124, lng: 73.7843, type: "sensor", name: "Temperature Sensor", value: "28°C", status: "normal" },
-  { id: 5, lat: 20.0074, lng: 73.7763, type: "alert", name: "Pest Alert Zone", message: "Aphids detected", severity: "high" },
-  { id: 6, lat: 20.0154, lng: 73.7863, type: "water", name: "Water Tank", level: "85%", status: "good" },
-  { id: 7, lat: 20.0084, lng: 73.7813, type: "field", name: "Field C - Soybean", area: "4 acres", status: "harvesting" },
-  { id: 8, lat: 20.0144, lng: 73.7793, type: "equipment", name: "Tractor Location", status: "idle" },
+  // Major Agricultural Markets (Mandi/APMC) in India
+  { id: 1, lat: 28.7041, lng: 77.1025, type: "market", name: "Azadpur Mandi", details: "Delhi - Largest fruit & vegetable market in Asia. Handles 3,000+ tons daily. Major crops: Fruits, Vegetables, Grains", status: "active" },
+  { id: 2, lat: 19.0760, lng: 72.8777, type: "market", name: "Vashi APMC", details: "Mumbai, Maharashtra - Major wholesale market. Handles 2,500+ tons daily. Major crops: Fruits, Vegetables, Spices", status: "active" },
+  { id: 3, lat: 13.0827, lng: 80.2707, type: "market", name: "Koyambedu Market", details: "Chennai, Tamil Nadu - Largest wholesale market in South India. Major crops: Fruits, Vegetables, Flowers", status: "active" },
+  { id: 4, lat: 12.9716, lng: 77.5946, type: "market", name: "Yeshwanthpur APMC", details: "Bangalore, Karnataka - Major agricultural market. Handles 1,800+ tons daily. Major crops: Fruits, Vegetables, Grains", status: "active" },
+  { id: 5, lat: 30.7333, lng: 76.7794, type: "market", name: "Chandigarh Mandi", details: "Chandigarh - Major grain market. Handles 1,200+ tons daily. Major crops: Wheat, Rice, Pulses", status: "active" },
+  { id: 6, lat: 22.7196, lng: 75.8577, type: "market", name: "Indore Mandi", details: "Indore, Madhya Pradesh - Largest soyabean market in Asia. Major crops: Soyabean, Wheat, Cotton", status: "active" },
+  { id: 7, lat: 21.1458, lng: 79.0882, type: "market", name: "Nagpur APMC", details: "Nagpur, Maharashtra - Major orange and cotton market. Major crops: Oranges, Cotton, Soyabean", status: "active" },
+  { id: 8, lat: 23.0225, lng: 72.5714, type: "market", name: "Ahmedabad APMC", details: "Ahmedabad, Gujarat - Major agricultural market. Handles 2,000+ tons daily. Major crops: Cotton, Groundnut, Vegetables", status: "active" },
+  { id: 9, lat: 22.5726, lng: 88.3639, type: "market", name: "Kolkata Mandi", details: "Kolkata, West Bengal - Major wholesale market. Handles 1,500+ tons daily. Major crops: Rice, Vegetables, Fish", status: "active" },
+  { id: 10, lat: 17.3850, lng: 78.4867, type: "market", name: "Hyderabad APMC", details: "Hyderabad, Telangana - Major agricultural market. Handles 1,800+ tons daily. Major crops: Rice, Cotton, Chillies", status: "active" },
+  { id: 11, lat: 26.9124, lng: 75.7873, type: "market", name: "Jaipur Mandi", details: "Jaipur, Rajasthan - Major grain market. Major crops: Wheat, Mustard, Pulses", status: "active" },
+  { id: 12, lat: 25.5941, lng: 85.1376, type: "market", name: "Patna Mandi", details: "Patna, Bihar - Major agricultural market. Major crops: Rice, Wheat, Vegetables", status: "active" },
+  { id: 13, lat: 19.2183, lng: 72.9781, type: "market", name: "Nashik APMC", details: "Nashik, Maharashtra - Major onion and grape market. Major crops: Onions, Grapes, Vegetables", status: "active" },
+  { id: 14, lat: 30.9010, lng: 75.8573, type: "market", name: "Ludhiana Mandi", details: "Ludhiana, Punjab - Major grain market. Major crops: Wheat, Rice, Cotton", status: "active" },
+  { id: 15, lat: 18.5204, lng: 73.8567, type: "market", name: "Pune APMC", details: "Pune, Maharashtra - Major agricultural market. Major crops: Vegetables, Fruits, Grains", status: "active" },
 ];
 
 // Helplines
